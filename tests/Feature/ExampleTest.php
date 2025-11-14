@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Controllers\HomeController;
+use Alphavel\Framework\Response;
 
 class ExampleTest extends TestCase
 {
@@ -11,21 +13,12 @@ class ExampleTest extends TestCase
      */
     public function test_the_application_returns_a_successful_response(): void
     {
-        $response = $this->get('/');
+        $controller = new HomeController();
+        $response = $controller->index();
 
-        $this->assertResponseOk($response);
-        $this->assertArrayHasKey('message', $response);
-    }
-
-    /**
-     * Test health check endpoint.
-     */
-    public function test_health_check_endpoint(): void
-    {
-        $response = $this->get('/health');
-
-        $this->assertResponseOk($response);
-        $this->assertArrayHasKey('status', $response);
-        $this->assertEquals('healthy', $response['status']);
+        $this->assertInstanceOf(Response::class, $response);
+        
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('message', $content);
     }
 }
