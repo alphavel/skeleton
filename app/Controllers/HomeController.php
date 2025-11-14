@@ -13,28 +13,29 @@ use Alphavel\Framework\Response;
 class HomeController extends Controller
 {
     /**
-     * Show framework version and info
+     * Welcome endpoint
      */
     public function index(): Response
     {
-        $composerPath = dirname(__DIR__, 2) . '/composer.json';
-        $composerJson = json_decode(file_get_contents($composerPath), true);
-        
         return Response::make()->json([
-            'framework' => 'Alphavel Framework',
+            'message' => 'Welcome to Alphavel Framework! 🚀',
+            'description' => 'Ultra-fast PHP framework built with Swoole for high-performance applications',
             'version' => '2.0.1',
             'php' => PHP_VERSION,
-            'packages' => [
-                'alphavel/alphavel' => $composerJson['require']['alphavel/alphavel'] ?? 'unknown',
-                'alphavel/cache' => $composerJson['require']['alphavel/cache'] ?? 'unknown',
-                'alphavel/database' => $composerJson['require']['alphavel/database'] ?? 'unknown',
-                'alphavel/events' => $composerJson['require']['alphavel/events'] ?? 'unknown',
-                'alphavel/logging' => $composerJson['require']['alphavel/logging'] ?? 'unknown',
-                'alphavel/validation' => $composerJson['require']['alphavel/validation'] ?? 'unknown',
-                'alphavel/support' => $composerJson['require']['alphavel/support'] ?? 'unknown',
+            'features' => [
+                '⚡ Swoole-powered async I/O',
+                '🎯 Laravel-style syntax',
+                '📦 Modular architecture',
+                '🚀 520k+ requests/second',
             ],
-            'message' => 'Welcome to Alphavel Framework! 🚀',
             'docs' => 'https://github.com/alphavel/alphavel',
+            'get_started' => [
+                'database' => 'composer require alphavel/database',
+                'cache' => 'composer require alphavel/cache',
+                'events' => 'composer require alphavel/events',
+                'logging' => 'composer require alphavel/logging',
+                'validation' => 'composer require alphavel/validation',
+            ]
         ]);
     }
 }

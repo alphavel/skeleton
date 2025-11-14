@@ -1,20 +1,11 @@
 {
-    "name": "arthur/alphavel",
-    "description": "Ultra-fast PHP framework with Swoole and Laravel-style features",
+    "name": "alphavel/skeleton",
+    "description": "Minimal Alphavel Framework application skeleton - install only what you need",
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
-        "psr/container": "^2.0",
-        "psr/log": "^3.0",
-        "vlucas/phpdotenv": "^5.0",
-        "alphavel/alphavel": "^2.0",
-        "alphavel/cache": "^2.0",
-        "alphavel/database": "^2.0",
-        "alphavel/events": "^2.0",
-        "alphavel/logging": "^2.0",
-        "alphavel/validation": "^2.0",
-        "alphavel/support": "^2.0"
+        "php": ">=8.1",
+        "alphavel/alphavel": "^2.0"
     },
     "require-dev": {
         "laravel/pint": "^1.25",
@@ -45,13 +36,7 @@
     },
     "extra": {
         "alphavel": {
-            "providers": [
-                "Alphavel\\Cache\\CacheServiceProvider",
-                "Alphavel\\Database\\DatabaseServiceProvider",
-                "Alphavel\\Events\\EventServiceProvider",
-                "Alphavel\\Logging\\LoggingServiceProvider",
-                "Alphavel\\Validation\\ValidationServiceProvider"
-            ]
+            "providers": []
         }
     },
     "minimum-stability": "dev",

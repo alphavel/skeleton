@@ -1,36 +1,117 @@
-# Alphavel Framework# alphavel Framework v2.0
+# Alphavel Framework Skeleton
 
+> Minimal application structure for Alphavel Framework - install only what you need!
 
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.1-blue.svg)](https://php.net)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-<p align="center">> Ultra-fast modular PHP framework with Swoole. Pay only for what you use.
+---
 
-  <strong>Ultra-fast PHP framework powered by Swoole</strong>
+## 🚀 Quick Start
 
-  <br>**Performance:** 520,000 req/s | **Memory:** 0.3-4MB | **Architecture:** Modular + PSR Compliant
+```bash
+# Create new project
+composer create-project alphavel/skeleton my-app
+cd my-app
 
-  <em>520,000+ requests/second • Laravel-style features • PSR compliant</em>
+# Start development server
+php -S localhost:8000 -t public
+```
 
-</p>[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.1-blue.svg)](https://php.net)
+Visit: http://localhost:8000
 
-[![PSR Compliant](https://img.shields.io/badge/PSR-1%2C3%2C4%2C11%2C12-green.svg)](https://www.php-fig.org/psr/)
+---
 
-<p align="center">[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+## 📦 What's Included
 
-  <a href="https://packagist.org/packages/alphavel/alphavel"><img src="https://img.shields.io/packagist/v/alphavel/alphavel" alt="Latest Version"></a>
+This skeleton comes with **minimal dependencies** - only the Alphavel core:
 
-  <a href="https://packagist.org/packages/alphavel/alphavel"><img src="https://img.shields.io/packagist/dt/alphavel/alphavel" alt="Total Downloads"></a>---
+- ✅ **alphavel/alphavel** - Framework core (Router, HTTP, Container, Facades)
+- ✅ Basic application structure (controllers, routes, config)
+- ✅ Example endpoints
 
-  <a href="https://packagist.org/packages/alphavel/alphavel"><img src="https://img.shields.io/packagist/l/alphavel/alphavel" alt="License"></a>
+**No database, cache, or logging by default.** Perfect for microservices and APIs!
 
-</p>## 🚀 Why alphavel v2.0?
+---
 
+## 🔌 Install Additional Packages (Optional)
 
+Add only what your project needs:
 
----### Modular Architecture
+```bash
+# Database (ORM, Query Builder, Migrations)
+composer require alphavel/database
 
+# Cache (Redis, File, Memory drivers)
+composer require alphavel/cache
 
+# Events (Event Dispatcher & Listeners)
+composer require alphavel/events
 
-## 🚀 Features**Load only what you need:**
+# Logging (PSR-3 compliant logger)
+composer require alphavel/logging
+
+# Validation (Input validation rules)
+composer require alphavel/validation
+
+# Support (Helper functions and collections)
+composer require alphavel/support
+```
+
+---
+
+## 📁 Project Structure
+
+```
+my-app/
+├── app/
+│   └── Controllers/
+│       └── HomeController.php    # Welcome endpoint
+├── bootstrap/
+│   └── app.php                   # Application bootstrap
+├── config/
+│   └── app.php                   # Configuration
+├── public/
+│   └── index.php                 # Entry point
+├── routes/
+│   └── api.php                   # API routes
+├── storage/
+│   ├── logs/
+│   └── framework/
+└── composer.json
+```
+
+---
+
+## ⚡ Why Alphavel?
+
+- **520k+ requests/second** - Swoole-powered performance
+- **0.3MB memory footprint** - For minimal setups
+- **Modular** - Install only what you need
+- **Laravel-style** - Familiar syntax and patterns
+- **PSR Compliant** - Follows PHP standards
+
+---
+
+## 📚 Documentation
+
+- **Framework Core:** https://github.com/alphavel/alphavel
+- **All Packages:** https://github.com/alphavel
+
+---
+
+## 🎯 Perfect For
+
+✅ Microservices and APIs  
+✅ High-performance web applications  
+✅ Real-time applications with Swoole  
+✅ Lightweight projects that need speed  
+
+---
+
+## � License
+
+MIT License - see [LICENSE](LICENSE) file for details
 
 
 
