@@ -8,13 +8,13 @@
         "psr/container": "^2.0",
         "psr/log": "^3.0",
         "vlucas/phpdotenv": "^5.0",
-        "alphavel/alphavel": "dev-main",
-        "alphavel/cache": "dev-main",
-        "alphavel/database": "dev-main",
-        "alphavel/events": "dev-main",
-        "alphavel/logging": "dev-main",
-        "alphavel/validation": "dev-main",
-        "alphavel/support": "dev-main"
+        "alphavel/alphavel": "^2.0",
+        "alphavel/cache": "^2.0",
+        "alphavel/database": "^2.0",
+        "alphavel/events": "^2.0",
+        "alphavel/logging": "^2.0",
+        "alphavel/validation": "^2.0",
+        "alphavel/support": "^2.0"
     },
     "require-dev": {
         "laravel/pint": "^1.25",
