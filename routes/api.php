@@ -9,8 +9,4 @@ use Alphavel\Framework\Response;
 $router->get('/', 'App\Controllers\HomeController@index');
 
 // Health check endpoint
-$router->get('/health', fn () => Response::success([
-    'status' => 'healthy',
-    'timestamp' => time(),
-    'memory' => round(memory_get_usage(true) / 1024 / 1024, 2) . ' MB',
-]));
+$router->get('/health', 'App\Controllers\HomeController@health');

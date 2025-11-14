@@ -1,5 +1,15 @@
 FROM php:8.2-cli
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libbrotli-dev \
+    autoconf \
+    g++ \
+    make \
+    git \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install Swoole extension
 RUN pecl install swoole \
     && docker-php-ext-enable swoole

@@ -31,5 +31,7 @@ class ExampleTest extends TestCase
         $json = $this->json($response);
         $this->assertArrayHasKey('status', $json);
         $this->assertEquals('healthy', $json['status']);
+        $this->assertArrayHasKey('timestamp', $json);
+        $this->assertArrayHasKey('memory', $json);
     }
 }

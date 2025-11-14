@@ -38,4 +38,16 @@ class HomeController extends Controller
             ]
         ]);
     }
+
+    /**
+     * Health check endpoint
+     */
+    public function health(): Response
+    {
+        return Response::make()->json([
+            'status' => 'healthy',
+            'timestamp' => time(),
+            'memory' => round(memory_get_usage(true) / 1024 / 1024, 2) . ' MB',
+        ]);
+    }
 }
