@@ -5,12 +5,20 @@
     "license": "MIT",
     "require": {
         "php": ">=8.1",
-        "alphavel/alphavel": "dev-main"
+        "alphavel/alphavel": "^2.0"
     },
     "require-dev": {
         "laravel/pint": "^1.25",
         "phpunit/phpunit": "^10.5",
         "squizlabs/php_codesniffer": "^4.0"
+    },
+    "suggest": {
+        "ext-swoole": "Required for high-performance async server (520k+ req/s). Install: sudo pecl install swoole",
+        "alphavel/database": "For database operations and query builder",
+        "alphavel/cache": "For caching support (Redis, Memcached, File)",
+        "alphavel/events": "For event-driven architecture",
+        "alphavel/logging": "For application logging",
+        "alphavel/validation": "For request validation"
     },
     "autoload": {
         "psr-4": {
@@ -26,6 +34,16 @@
         }
     },
     "scripts": {
+        "post-create-project-cmd": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php -r \"echo '\\n✅ Alphavel Framework installed successfully!\\n';\"",
+            "@php -r \"echo '\\n📦 Suggested packages:\\n';\"",
+            "@php -r \"echo '   composer require alphavel/database\\n';\"",
+            "@php -r \"echo '   composer require alphavel/cache\\n';\"",
+            "@php -r \"echo '\\n🚀 Get started:\\n';\"",
+            "@php -r \"echo '   php public/index.php\\n';\"",
+            "@php -r \"echo '\\n📖 Docs: https://github.com/alphavel/alphavel\\n\\n';\""
+        ],
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-html coverage"
     },

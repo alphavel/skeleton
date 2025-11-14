@@ -5,6 +5,18 @@ require __DIR__.'/../vendor/autoload.php';
 use Alphavel\Framework\Application;
 use Alphavel\Framework\CoreServiceProvider;
 
+// Check Swoole extension
+if (!extension_loaded('swoole')) {
+    echo "\n⚠️  Swoole extension not found.\n";
+    echo "Alphavel requires Swoole for high-performance async operations.\n\n";
+    echo "📦 Install Swoole:\n";
+    echo "   Ubuntu/Debian: sudo apt-get install php-swoole\n";
+    echo "   macOS: pecl install swoole\n";
+    echo "   Or use Docker: docker run -p 9501:9501 alphavel-app\n\n";
+    echo "📖 Docs: https://github.com/swoole/swoole-src\n\n";
+    exit(1);
+}
+
 $app = Application::getInstance();
 
 $app->loadConfig(__DIR__.'/../config/app.php');
