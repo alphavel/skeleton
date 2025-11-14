@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+/**
+ * pfast CLI - Artisan-like Console
+ * 
+ * Usage:
+ *   ./pfast list
+ *   ./pfast make:controller UserController
+ *   ./pfast make:model User
+ *   ./pfast cache:clear
+ *   ./pfast serve
+ */
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Pfast\Core\Console\Console;
+
+// Create console application
+$console = new Console();
+$console->setName('pfast');
+$console->setVersion('2.0.0');
+
+// Auto-discover commands from core
+$console->autodiscover(__DIR__ . '/packages/core/src/Console/Commands');
+
+// Auto-discover user commands (if directory exists)
+$console->autodiscover(__DIR__ . '/app/Console/Commands');
+
+// Run console
+exit($console->run($argv));

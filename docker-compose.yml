@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: myapp_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: myapp
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - myapp_network
+
+  # Opcional: Adicione o app PHP aqui se quiser containerizar tudo
+  app:
+    build: .
+    ports:
+      - "9501:9501"
+    depends_on:
+      - mysql
+    networks:
+      - myapp_network
+    environment:
+      DB_HOST: mysql
+      DB_NAME: myapp
+      DB_USER: user
+      DB_PASS: pass
+
+volumes:
+  mysql_data:
+
+networks:
+  myapp_network:
