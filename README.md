@@ -1,4 +1,225 @@
-# Alphavel Framework Skeleton
+# Alphavel Application Skeleton
+
+Minimal application structure for Alphavel Framework - install only what you need!
+
+## Requirements
+
+- PHP 8.1+
+- Swoole extension
+- Composer
+
+## Quick Start
+
+### Option 1: Docker (Recommended - No Swoole installation needed!)
+
+```bash
+# Create project
+composer create-project alphavel/skeleton my-app
+cd my-app
+
+# Start application (minimal - just Alphavel)
+docker-compose up
+
+# Access
+curl http://localhost:9999
+```
+
+### Option 2: Local Installation
+
+```bash
+# Create project
+composer create-project alphavel/skeleton my-app
+cd my-app
+
+# Install Swoole extension
+# Ubuntu/Debian
+sudo apt install php-swoole php-mbstring
+
+# macOS
+brew install php-swoole
+
+# PECL
+sudo pecl install swoole
+
+# Copy environment file
+cp .env.example .env
+
+# Start server
+php public/index.php
+```
+
+Visit: http://localhost:9999
+
+## Project Structure
+
+```
+my-app/
+├── app/
+│   └── Controllers/
+│       └── HomeController.php
+├── bootstrap/
+│   └── app.php              # Application bootstrap
+├── config/
+│   └── app.php              # Configuration
+├── public/
+│   └── index.php            # Entry point
+├── routes/
+│   └── api.php              # Route definitions
+├── storage/
+│   ├── framework/           # Framework cache
+│   └── logs/                # Application logs
+├── tests/                   # PHPUnit tests
+├── Dockerfile               # Docker image
+├── docker-compose.yml       # Docker orchestration
+└── composer.json
+```
+
+## Install Additional Packages (Optional)
+
+```bash
+# Database (ORM, Query Builder, Migrations)
+composer require alphavel/database
+
+# Cache (Redis, File, Memory drivers)
+composer require alphavel/cache
+
+# Events (Event Dispatcher & Listeners)
+composer require alphavel/events
+
+# Logging (PSR-3 compliant logger)
+composer require alphavel/logging
+
+# Validation (Input validation rules)
+composer require alphavel/validation
+```
+
+**After installing packages, update your `.env`:**
+
+```env
+# For Docker (use service names)
+DB_HOST=mysql          # or 'postgres'
+REDIS_HOST=redis
+
+# For local installation
+DB_HOST=localhost
+REDIS_HOST=localhost
+```
+
+## Docker Commands
+
+```bash
+# Start services
+docker-compose up -d
+
+# Stop services
+docker-compose down
+
+# View logs
+docker-compose logs -f app
+
+# Restart application
+docker-compose restart app
+
+# Run commands inside container
+docker-compose exec app php -v
+docker-compose exec app composer install
+docker-compose exec app ./vendor/bin/phpunit
+
+# Clean everything (including volumes)
+docker-compose down -v
+```
+
+### Adding Optional Services
+
+1. Copy the example file:
+```bash
+cp docker-compose.example.yml docker-compose.override.yml
+```
+
+2. Edit `docker-compose.override.yml` and uncomment services you need:
+   - **MySQL** - Relational database (port 3306)
+   - **Redis** - High-performance cache (port 6379)
+
+3. Update your `.env`:
+```env
+# For MySQL
+DB_HOST=mysql
+DB_DATABASE=alphavel
+DB_USERNAME=root
+DB_PASSWORD=secret
+
+# For Redis
+REDIS_HOST=redis
+```
+
+4. Start services:
+```bash
+docker-compose up -d
+```
+
+## Configuration
+
+Copy `.env.example` to `.env` and adjust settings:
+
+```bash
+cp .env.example .env
+```
+
+### Docker Environment
+
+When using Docker Compose, use service names as hosts:
+
+```env
+DB_HOST=mysql        # Not 'localhost'
+REDIS_HOST=redis     # Not 'localhost'
+```
+
+### Local Environment
+
+When running locally, use localhost:
+
+```env
+DB_HOST=localhost
+REDIS_HOST=localhost
+```
+
+## Running Tests
+
+```bash
+# Local
+./vendor/bin/phpunit
+
+# Docker
+docker-compose exec app ./vendor/bin/phpunit
+```
+
+## Performance
+
+Alphavel Framework with Swoole delivers:
+- **520,000+ requests/second** (async mode)
+- **0.3MB memory** per request
+- **<1ms** response time
+
+vs Traditional PHP-FPM: ~2,000 req/s
+
+## Why Swoole?
+
+Swoole provides:
+- ✅ Persistent connections
+- ✅ Coroutines (async/await)
+- ✅ Built-in HTTP/WebSocket server
+- ✅ 260x faster than PHP-FPM
+
+## Documentation
+
+- Framework: https://github.com/alphavel/alphavel
+- Packages: https://github.com/alphavel
+- Swoole: https://www.swoole.co.uk/
+
+## License
+
+MIT
+
 
 > Minimal application structure for Alphavel Framework - install only what you need!
 

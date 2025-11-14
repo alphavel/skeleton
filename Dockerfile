@@ -25,7 +25,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
 # Expose port
-EXPOSE 9501
+EXPOSE 9999
 
 # Start application
 CMD ["php", "public/index.php"]

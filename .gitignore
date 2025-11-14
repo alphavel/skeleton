@@ -9,6 +9,11 @@
 _ide_helper.php
 _ide_helper_models.php
 
+# Environment & Docker
+.env
+.env.local
+.env.*.local
+
 # Cache
 storage/cache/
 storage/logs/

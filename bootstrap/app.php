@@ -12,7 +12,7 @@ if (!extension_loaded('swoole')) {
     echo "📦 Install Swoole:\n";
     echo "   Ubuntu/Debian: sudo apt-get install php-swoole\n";
     echo "   macOS: pecl install swoole\n";
-    echo "   Or use Docker: docker run -p 9501:9501 alphavel-app\n\n";
+    echo "   Or use Docker: docker run -p 9999:9999 alphavel-app\n\n";
     echo "📖 Docs: https://github.com/swoole/swoole-src\n\n";
     exit(1);
 }

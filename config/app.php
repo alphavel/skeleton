@@ -17,7 +17,7 @@ return [
     // Swoole Server Configuration
     'server' => [
         'host' => env('SERVER_HOST', '0.0.0.0'),
-        'port' => env('SERVER_PORT', 9501),
+        'port' => env('SERVER_PORT', 9999),
         'workers' => env('SERVER_WORKERS', 4),
     ],
     
