@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use Alphavel\Framework\Application;
+use Alphavel\Framework\Request;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 /**
@@ -9,30 +11,38 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
  */
 abstract class TestCase extends BaseTestCase
 {
+    protected Application $app;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        
+        // Bootstrap application
+        $this->app = require __DIR__.'/../bootstrap/app.php';
+    }
+
     /**
      * Make a GET request to the application
      */
     protected function get(string $uri): array
     {
-        // For skeleton, we just return mock data
-        // Users can implement proper HTTP testing when needed
+        // Create request
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_SERVER['REQUEST_URI'] = $uri;
+        $_SERVER['REQUEST_SCHEME'] = 'http';
+        $_SERVER['SERVER_NAME'] = 'localhost';
+        $_SERVER['SERVER_PORT'] = '9501';
         
-        if ($uri === '/') {
-            return [
-                'message' => 'Welcome to Alphavel Framework!',
-                'version' => '2.0.1',
-            ];
-        }
+        $request = Request::capture();
         
-        if ($uri === '/health') {
-            return [
-                'status' => 'healthy',
-                'timestamp' => time(),
-                'memory' => '2.5 MB',
-            ];
-        }
+        // Handle request
+        $response = $this->app->handle($request);
         
-        return [];
+        // Get response content
+        $content = $response->getContent();
+        
+        // Parse JSON
+        return json_decode($content, true) ?? [];
     }
 
     /**
