@@ -29,10 +29,7 @@ return [
     ],
     
     'providers' => [
-        Alphavel\Cache\CacheServiceProvider::class,
-        Alphavel\Database\DatabaseServiceProvider::class,
-        Alphavel\Events\EventServiceProvider::class,
-        Alphavel\Logging\LoggingServiceProvider::class,
-        Alphavel\Validation\ValidationServiceProvider::class,
+        // Add your service providers here
+        // Example: Alphavel\Cache\CacheServiceProvider::class,
     ],
 ];
