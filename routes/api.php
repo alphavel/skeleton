@@ -4,17 +4,12 @@ use Alphavel\Framework\Router;
 
 /** @var Router $router */
 
+// Home route - Shows framework version and info
 $router->get('/', 'App\Controllers\HomeController@index');
 
+// Health check endpoint
 $router->get('/health', fn () => \Alphavel\Framework\Response::success([
     'status' => 'healthy',
     'timestamp' => time(),
-    'memory' => memory_get_usage(true) / 1024 / 1024 .' MB',
+    'memory' => round(memory_get_usage(true) / 1024 / 1024, 2) . ' MB',
 ]));
-
-// API routes
-$router->get('/api/users', 'App\Controllers\UserController@index');
-$router->get('/api/users/{id}', 'App\Controllers\UserController@show');
-$router->post('/api/users', 'App\Controllers\UserController@store');
-$router->put('/api/users/{id}', 'App\Controllers\UserController@update');
-$router->delete('/api/users/{id}', 'App\Controllers\UserController@destroy');

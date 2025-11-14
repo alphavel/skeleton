@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use DB;
 use Alphavel\Framework\Controller;
 use Alphavel\Framework\Response;
 
@@ -14,15 +13,28 @@ use Alphavel\Framework\Response;
 class HomeController extends Controller
 {
     /**
-     * Home page / API info
+     * Show framework version and info
      */
     public function index(): Response
     {
-        // Using DB facade (global class, no import needed)
-        $result = DB::query('SELECT 1+1 as result');
+        $composerPath = dirname(__DIR__, 2) . '/composer.json';
+        $composerJson = json_decode(file_get_contents($composerPath), true);
         
         return Response::make()->json([
-            'result' => $result[0]['result']
+            'framework' => 'Alphavel Framework',
+            'version' => '2.0.1',
+            'php' => PHP_VERSION,
+            'packages' => [
+                'alphavel/alphavel' => $composerJson['require']['alphavel/alphavel'] ?? 'unknown',
+                'alphavel/cache' => $composerJson['require']['alphavel/cache'] ?? 'unknown',
+                'alphavel/database' => $composerJson['require']['alphavel/database'] ?? 'unknown',
+                'alphavel/events' => $composerJson['require']['alphavel/events'] ?? 'unknown',
+                'alphavel/logging' => $composerJson['require']['alphavel/logging'] ?? 'unknown',
+                'alphavel/validation' => $composerJson['require']['alphavel/validation'] ?? 'unknown',
+                'alphavel/support' => $composerJson['require']['alphavel/support'] ?? 'unknown',
+            ],
+            'message' => 'Welcome to Alphavel Framework! 🚀',
+            'docs' => 'https://github.com/alphavel/alphavel',
         ]);
     }
 }
