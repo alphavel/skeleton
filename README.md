@@ -32,7 +32,7 @@ docker-compose -f docker-compose.dev.yml up
 - ✅ Gera arquivo .env
 - ✅ Inicia servidor Swoole
 
-**Acesse:** http://localhost:8080
+**Acesse:** http://localhost:9999
 
 **Comandos úteis:**
 ```bash
@@ -62,7 +62,7 @@ cd my-app
 docker-compose up -d
 
 # Acesse
-curl http://localhost:8080
+curl http://localhost:9999
 ```
 
 ### Option 3: Instalação Local (Swoole necessário)
@@ -501,7 +501,7 @@ composer install
 
 ```php./alphavel serve
 
-<?php# Server running at http://localhost:8080
+<?php# Server running at http://localhost:9999
 
 ```
 
@@ -531,7 +531,7 @@ $app->get('/', function (Request $request) {```
 
 $app->get('/users/{id}', function (Request $request, $id) {```bash
 
-    return Response::json(['user_id' => $id]);curl http://localhost:8080/hello
+    return Response::json(['user_id' => $id]);curl http://localhost:9999/hello
 
 });# {"status":"success","data":{"message":"Hello World!"}}
 
@@ -1098,7 +1098,7 @@ services:
   app:
     build: .
     ports:
-      - "8080:8080"
+      - "8080:9999"
     command: php alphavel serve
 ```
 
@@ -1128,7 +1128,7 @@ user=www-data
 
 ```nginx
 upstream alphavel {
-    server 127.0.0.1:8080;
+    server 127.0.0.1:9999;
 }
 
 server {

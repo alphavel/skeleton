@@ -19,7 +19,7 @@ docker-compose -f docker-compose.dev.yml up
 **Primeira execução:** Pode levar 2-3 minutos (instalação automática do Swoole)  
 **Próximas execuções:** Instantâneas
 
-**Acesse:** http://localhost:8080
+**Acesse:** http://localhost:9999
 
 ---
 
@@ -36,7 +36,7 @@ Quando você executa `make dev`, o container:
 7. ✅ Define permissões corretas
 8. ✅ Gera arquivo facades.php
 9. ✅ Copia .env.example para .env
-10. ✅ Inicia o servidor Swoole na porta 9501
+10. ✅ Inicia o servidor Swoole na porta 9999
 
 ---
 
@@ -90,7 +90,7 @@ docker-compose -f docker-compose.dev.yml exec app php -v
 
 | Serviço | Porta Host | Porta Container | Descrição |
 |---------|------------|-----------------|-----------|
-| Aplicação | 8080 | 9501 | Servidor Swoole |
+| Aplicação | 9999 | 9999 | Servidor Swoole |
 | MySQL | 3307 | 3306 | Banco de dados (dev) |
 
 **Nota:** Porta 3307 no host para não conflitar com MySQL local
@@ -303,7 +303,7 @@ A: Sim! Desde que tenha Docker Desktop instalado.
 ## Próximos Passos
 
 1. ✅ Inicie o ambiente: `make dev`
-2. ✅ Acesse http://localhost:8080
+2. ✅ Acesse http://localhost:9999
 3. ✅ Leia a documentação completa no README.md
 4. ✅ Instale pacotes adicionais: `composer require alphavel/database`
 5. ✅ Comece a desenvolver!

@@ -70,7 +70,7 @@ sleep 8
 # 10. Verificar se está rodando
 MAX_ATTEMPTS=10
 ATTEMPT=0
-PORT=${APP_PORT:-8080}
+PORT=${APP_PORT:-9999}
 
 while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
     if curl -s http://localhost:${PORT} > /dev/null 2>&1; then
