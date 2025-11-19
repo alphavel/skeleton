@@ -32,16 +32,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy composer files first for better layer caching
-COPY composer.json composer.lock* ./
-
-# Install composer dependencies
-RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
-
 # Copy application files
 COPY . .
 
-# Create required directories with proper permissions
+# Create required directories with proper permissions BEFORE composer
 RUN mkdir -p storage/framework \
              storage/logs \
              storage/cache \
@@ -49,13 +43,11 @@ RUN mkdir -p storage/framework \
     && chmod -R 777 storage \
     && chmod -R 777 bootstrap/cache
 
-# Create facades.php file if it doesn't exist
-RUN if [ ! -f storage/framework/facades.php ]; then \
-        echo '<?php' > storage/framework/facades.php; \
-    fi
+# Create facades.php file BEFORE composer autoload
+RUN echo '<?php' > storage/framework/facades.php
 
-# Complete the composer installation
-RUN composer dump-autoload --optimize
+# Install composer dependencies
+RUN composer install --no-dev --optimize-autoloader --prefer-dist
 
 # Expose Swoole port
 EXPOSE 9999
