@@ -9,14 +9,14 @@ services:
     restart: unless-stopped
     working_dir: /var/www
     ports:
-      - "${APP_PORT:-8080}:9501"
+      - "${APP_PORT:-9999}:9999"
     volumes:
       - ./:/var/www
       - /var/www/vendor  # Prevent overwriting vendor
     environment:
       - APP_ENV=${APP_ENV:-local}
       - APP_DEBUG=${APP_DEBUG:-true}
-      - APP_PORT=9501
+      - APP_PORT=9999
       - DB_HOST=db
       - DB_PORT=3306
       - DB_DATABASE=${DB_DATABASE:-alphavel}
@@ -29,7 +29,7 @@ services:
         condition: service_healthy
     command: php public/index.php
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9501/"]
+      test: ["CMD", "curl", "-f", "http://localhost:9999/"]
       interval: 30s
       timeout: 3s
       retries: 3

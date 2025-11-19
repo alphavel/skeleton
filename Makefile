@@ -20,7 +20,7 @@ dev: ## Inicia ambiente de desenvolvimento (instala Swoole automaticamente)
 	@echo "⏳ Primeira execução pode levar alguns minutos (instalação do Swoole)"
 	@docker-compose -f docker-compose.dev.yml up
 	@echo "✅ Ambiente de desenvolvimento pronto"
-	@echo "🌐 Aplicação disponível em: http://localhost:8080"
+	@echo "🌐 Aplicação disponível em: http://localhost:9999"
 
 dev-stop: ## Para o ambiente de desenvolvimento
 	@echo "⏸️  Parando ambiente de desenvolvimento..."
@@ -43,7 +43,7 @@ start: ## Inicia os containers (produção)
 	@echo "🚀 Iniciando containers..."
 	@docker-compose up -d
 	@echo "✅ Containers iniciados"
-	@echo "🌐 Aplicação disponível em: http://localhost:8080"
+	@echo "🌐 Aplicação disponível em: http://localhost:9999"
 
 stop: ## Para os containers
 	@echo "⏸️  Parando containers..."
@@ -113,7 +113,7 @@ ps: ## Lista os containers em execução
 status: ## Mostra o status dos containers
 	@docker-compose ps
 	@echo ""
-	@echo "🌐 Aplicação: http://localhost:${APP_PORT:-8080}"
+	@echo "🌐 Aplicação: http://localhost:${APP_PORT:-9999}"
 	@echo "🗄️  MySQL: localhost:${DB_PORT:-3306}"
 
 fix-permissions: ## Corrige permissões de diretórios

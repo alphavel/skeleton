@@ -72,7 +72,7 @@
         ],
         "show-next-steps": [
             "@php -r \"echo '📝 Próximos passos:\\n\\n';\"",
-            "@php -r \"if (extension_loaded('swoole')) { echo '  ✅ Swoole detectado! Servidor pronto para iniciar:\\n\\n'; echo '     php public/index.php\\n'; echo '     # ou\\n'; echo '     make start\\n\\n'; echo '  🌐 Acesse: http://localhost:9501\\n\\n'; } else { echo '  📦 Instale Swoole (veja opções acima)\\n'; echo '  🐳 Ou use Docker:\\n\\n'; echo '     docker-compose -f docker-compose.dev.yml up\\n'; echo '     # ou\\n'; echo '     make dev\\n\\n'; echo '  🌐 Acesse: http://localhost:8080\\n\\n'; }\"",
+            "@php -r \"if (extension_loaded('swoole')) { echo '  ✅ Swoole detectado! Servidor pronto para iniciar:\\n\\n'; echo '     php public/index.php\\n'; echo '     # ou\\n'; echo '     make start\\n\\n'; echo '  🌐 Acesse: http://localhost:9999\\n\\n'; } else { echo '  📦 Instale Swoole (veja opções acima)\\n'; echo '  🐳 Ou use Docker:\\n\\n'; echo '     docker-compose -f docker-compose.dev.yml up\\n'; echo '     # ou\\n'; echo '     make dev\\n\\n'; echo '  🌐 Acesse: http://localhost:9999\\n\\n'; }\"",
             "@php -r \"echo '📦 Pacotes opcionais:\\n';\"",
             "@php -r \"echo '   composer require alphavel/database  # ORM e Query Builder\\n';\"",
             "@php -r \"echo '   composer require alphavel/cache     # Cache (Redis, File)\\n';\"",

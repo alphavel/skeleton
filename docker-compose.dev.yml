@@ -6,7 +6,7 @@ services:
     container_name: alphavel-dev
     working_dir: /app
     ports:
-      - "${APP_PORT:-8080}:9501"
+      - "${APP_PORT:-9999}:9999"
     volumes:
       - ./:/app
     environment:
@@ -79,13 +79,13 @@ services:
         fi
         
         echo ""
-        echo "🚀 Iniciando servidor Swoole na porta 9501..."
-        echo "🌐 Acesse: http://localhost:8080"
+        echo "🚀 Iniciando servidor Swoole na porta 9999..."
+        echo "🌐 Acesse: http://localhost:9999"
         echo ""
         
         php public/index.php
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9501/ || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:9999/ || exit 1"]
       interval: 30s
       timeout: 3s
       retries: 3

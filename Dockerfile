@@ -58,11 +58,11 @@ RUN if [ ! -f storage/framework/facades.php ]; then \
 RUN composer dump-autoload --optimize
 
 # Expose Swoole port
-EXPOSE 9501
+EXPOSE 9999
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:9501/ || exit 1
+    CMD curl -f http://localhost:9999/ || exit 1
 
 # Start application
 CMD ["php", "public/index.php"]
