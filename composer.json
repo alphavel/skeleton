@@ -23,10 +23,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/"
-        },
-        "files": [
-            "storage/framework/facades.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
@@ -57,8 +54,7 @@
             "@php -r \"!is_dir('storage/framework') && mkdir('storage/framework', 0777, true);\"",
             "@php -r \"!is_dir('storage/logs') && mkdir('storage/logs', 0777, true);\"",
             "@php -r \"!is_dir('storage/cache') && mkdir('storage/cache', 0777, true);\"",
-            "@php -r \"!is_dir('bootstrap/cache') && mkdir('bootstrap/cache', 0777, true);\"",
-            "@php -r \"!file_exists('storage/framework/facades.php') && file_put_contents('storage/framework/facades.php', '<?php');\""
+            "@php -r \"!is_dir('bootstrap/cache') && mkdir('bootstrap/cache', 0777, true);\""
         ],
         "set-permissions": [
             "@php -r \"@chmod('storage', 0777);\"",

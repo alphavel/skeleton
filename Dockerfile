@@ -43,9 +43,6 @@ RUN mkdir -p storage/framework \
     && chmod -R 777 storage \
     && chmod -R 777 bootstrap/cache
 
-# Create facades.php file BEFORE composer autoload
-RUN echo '<?php' > storage/framework/facades.php
-
 # Install composer dependencies
 RUN composer install --no-dev --optimize-autoloader --prefer-dist
 

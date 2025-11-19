@@ -48,12 +48,7 @@ echo -e "${YELLOW}📁 Criando estrutura de diretórios...${NC}"
 mkdir -p storage/framework storage/logs storage/cache bootstrap/cache
 chmod -R 777 storage bootstrap/cache
 
-# 6. Criar arquivo facades.php inicial
-echo -e "${YELLOW}📝 Criando arquivo de facades...${NC}"
-echo '<?php' > storage/framework/facades.php
-chmod 777 storage/framework/facades.php
-
-# 7. Copiar .env.example para .env se não existir
+# 6. Copiar .env.example para .env se não existir
 if [ -f .env.example ] && [ ! -f .env ]; then
     echo -e "${YELLOW}⚙️  Copiando configurações de ambiente...${NC}"
     cp .env.example .env

@@ -67,11 +67,6 @@ services:
         mkdir -p storage/framework storage/logs storage/cache bootstrap/cache
         chmod -R 777 storage bootstrap/cache
         
-        # Criar arquivo facades.php se não existir
-        if [ ! -f storage/framework/facades.php ]; then
-          echo '<?php' > storage/framework/facades.php
-        fi
-        
         # Copiar .env se não existir
         if [ ! -f .env ] && [ -f .env.example ]; then
           cp .env.example .env
