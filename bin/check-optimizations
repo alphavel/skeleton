@@ -1,0 +1,239 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Alphavel Performance Optimization Checker
+ * 
+ * Verifica se todas as otimizações estão ativas
+ */
+
+echo "\n🔍 Verificando Otimizações do Alphavel Framework\n";
+echo str_repeat("=", 60) . "\n\n";
+
+$checks = [];
+$errors = [];
+$warnings = [];
+
+// 1. Verificar Swoole
+echo "📦 Verificando Swoole...\n";
+if (!extension_loaded('swoole')) {
+    $errors[] = "❌ Swoole não está instalado";
+    echo "   ❌ Swoole NÃO encontrado\n";
+} else {
+    $version = phpversion('swoole');
+    $checks[] = "✅ Swoole instalado (versão: $version)";
+    echo "   ✅ Swoole versão $version\n";
+}
+
+// 2. Verificar Opcache
+echo "\n🚀 Verificando Opcache & JIT...\n";
+if (!extension_loaded('opcache')) {
+    $errors[] = "❌ Opcache não está instalado";
+    echo "   ❌ Opcache NÃO encontrado\n";
+} else {
+    $checks[] = "✅ Opcache instalado";
+    echo "   ✅ Opcache instalado\n";
+    
+    // Verificar se está habilitado
+    $enabled = ini_get('opcache.enable');
+    if ($enabled) {
+        $checks[] = "✅ Opcache habilitado";
+        echo "   ✅ Opcache habilitado\n";
+    } else {
+        $errors[] = "❌ Opcache desabilitado";
+        echo "   ❌ Opcache DESABILITADO\n";
+    }
+    
+    // Verificar JIT
+    $jit = ini_get('opcache.jit');
+    $jitBuffer = ini_get('opcache.jit_buffer_size');
+    
+    if ($jit === 'tracing' || $jit === '1255') {
+        $checks[] = "✅ JIT configurado: $jit";
+        echo "   ✅ JIT: $jit\n";
+    } else {
+        $warnings[] = "⚠️  JIT não otimizado (atual: $jit, recomendado: tracing)";
+        echo "   ⚠️  JIT: $jit (recomendado: tracing)\n";
+    }
+    
+    if ($jitBuffer) {
+        $bufferMB = intval($jitBuffer) / (1024 * 1024);
+        $checks[] = "✅ JIT Buffer: " . $bufferMB . "M";
+        echo "   ✅ JIT Buffer: " . $bufferMB . "M\n";
+        
+        if ($bufferMB < 100) {
+            $warnings[] = "⚠️  JIT Buffer pequeno (recomendado: 128M)";
+        }
+    } else {
+        $errors[] = "❌ JIT Buffer não configurado";
+        echo "   ❌ JIT Buffer: NÃO CONFIGURADO\n";
+    }
+    
+    // Verificar outras configs importantes
+    $memConsumption = ini_get('opcache.memory_consumption');
+    $maxFiles = ini_get('opcache.max_accelerated_files');
+    
+    echo "   📊 Memory consumption: {$memConsumption}M\n";
+    echo "   📊 Max accelerated files: $maxFiles\n";
+    
+    if ($memConsumption < 256) {
+        $warnings[] = "⚠️  opcache.memory_consumption baixo (recomendado: 256M)";
+    }
+    
+    if ($maxFiles < 20000) {
+        $warnings[] = "⚠️  opcache.max_accelerated_files baixo (recomendado: 20000)";
+    }
+}
+
+// 3. Verificar PDO
+echo "\n🗄️  Verificando PDO...\n";
+if (!extension_loaded('pdo')) {
+    $errors[] = "❌ PDO não está instalado";
+    echo "   ❌ PDO NÃO encontrado\n";
+} else {
+    $checks[] = "✅ PDO instalado";
+    echo "   ✅ PDO instalado\n";
+    
+    if (extension_loaded('pdo_mysql')) {
+        $checks[] = "✅ PDO MySQL instalado";
+        echo "   ✅ PDO MySQL instalado\n";
+    } else {
+        $errors[] = "❌ PDO MySQL não está instalado";
+        echo "   ❌ PDO MySQL NÃO encontrado\n";
+    }
+}
+
+// 4. Verificar configuração do Database
+echo "\n⚙️  Verificando configuração do Database...\n";
+
+// Tentar encontrar DatabaseServiceProvider no vendor (instalado via composer)
+$vendorPath = __DIR__ . '/../vendor/alphavel/database/DatabaseServiceProvider.php';
+$localPath = __DIR__ . '/../../database/DatabaseServiceProvider.php'; // Para dev do framework
+
+$dbServiceProvider = null;
+if (file_exists($vendorPath)) {
+    $dbServiceProvider = $vendorPath;
+} elseif (file_exists($localPath)) {
+    $dbServiceProvider = $localPath;
+}
+
+if ($dbServiceProvider) {
+    $content = file_get_contents($dbServiceProvider);
+    
+    if (strpos($content, 'ATTR_EMULATE_PREPARES => true') !== false) {
+        $checks[] = "✅ Emulated Prepares habilitado";
+        echo "   ✅ Emulated Prepares: HABILITADO\n";
+    } else if (strpos($content, 'ATTR_EMULATE_PREPARES => false') !== false) {
+        $warnings[] = "⚠️  Emulated Prepares desabilitado (perde ~14% performance)";
+        echo "   ⚠️  Emulated Prepares: DESABILITADO (perde ~14% performance)\n";
+    } else {
+        $warnings[] = "⚠️  Emulated Prepares não configurado explicitamente";
+        echo "   ⚠️  Emulated Prepares: não configurado\n";
+    }
+} else {
+    echo "   ℹ️  Database package não instalado (ok se não usar DB)\n";
+}
+
+// 5. Verificar .env
+echo "\n📝 Verificando .env...\n";
+
+$envPath = __DIR__ . '/../.env';
+if (file_exists($envPath)) {
+    $envContent = file_get_contents($envPath);
+    
+    // Server Dispatch Mode
+    if (preg_match('/SERVER_DISPATCH_MODE=(\d+)/', $envContent, $matches)) {
+        $mode = $matches[1];
+        if ($mode == 3) {
+            $checks[] = "✅ Dispatch Mode otimizado (Concurrent)";
+            echo "   ✅ SERVER_DISPATCH_MODE: 3 (Concurrent)\n";
+        } else {
+            $warnings[] = "⚠️  SERVER_DISPATCH_MODE=$mode (recomendado: 3)";
+            echo "   ⚠️  SERVER_DISPATCH_MODE: $mode (recomendado: 3 para APIs stateless)\n";
+        }
+    } else {
+        echo "   ℹ️  SERVER_DISPATCH_MODE não configurado (usará default do config)\n";
+    }
+    
+    // DB Pool Size
+    if (preg_match('/DB_POOL_SIZE=(\d+)/', $envContent, $matches)) {
+        $poolSize = $matches[1];
+        $checks[] = "✅ DB Pool Size: $poolSize";
+        echo "   ✅ DB_POOL_SIZE: $poolSize\n";
+        
+        if ($poolSize < 32) {
+            $warnings[] = "⚠️  DB_POOL_SIZE pequeno (recomendado: 64-128)";
+        }
+    } else {
+        echo "   ℹ️  DB_POOL_SIZE não configurado (usará default: 64)\n";
+    }
+    
+    // Max Request
+    if (preg_match('/SERVER_MAX_REQUEST=(\d+)/', $envContent, $matches)) {
+        $maxReq = $matches[1];
+        if ($maxReq == 0) {
+            $checks[] = "✅ Max Request ilimitado";
+            echo "   ✅ SERVER_MAX_REQUEST: 0 (unlimited)\n";
+        } else {
+            $warnings[] = "⚠️  SERVER_MAX_REQUEST=$maxReq (recomendado: 0)";
+            echo "   ⚠️  SERVER_MAX_REQUEST: $maxReq (recomendado: 0)\n";
+        }
+    }
+} else {
+    $warnings[] = "⚠️  Arquivo .env não encontrado";
+    echo "   ⚠️  .env não encontrado\n";
+}
+
+// 6. Verificar versão do PHP
+echo "\n🐘 Verificando PHP...\n";
+$phpVersion = phpversion();
+echo "   ✅ PHP versão: $phpVersion\n";
+
+if (version_compare($phpVersion, '8.2.0', '>=')) {
+    $checks[] = "✅ PHP 8.2+ (suporte completo a JIT)";
+} else if (version_compare($phpVersion, '8.0.0', '>=')) {
+    $warnings[] = "⚠️  PHP < 8.2 (JIT melhorado em 8.2+)";
+} else {
+    $errors[] = "❌ PHP < 8.0 (sem suporte a JIT)";
+}
+
+// Resumo
+echo "\n" . str_repeat("=", 60) . "\n";
+echo "📊 RESUMO\n";
+echo str_repeat("=", 60) . "\n\n";
+
+if (count($checks) > 0) {
+    echo "✅ Verificações bem-sucedidas: " . count($checks) . "\n";
+}
+
+if (count($warnings) > 0) {
+    echo "\n⚠️  Avisos: " . count($warnings) . "\n";
+    foreach ($warnings as $warning) {
+        echo "   $warning\n";
+    }
+}
+
+if (count($errors) > 0) {
+    echo "\n❌ Erros: " . count($errors) . "\n";
+    foreach ($errors as $error) {
+        echo "   $error\n";
+    }
+}
+
+// Status final
+echo "\n" . str_repeat("=", 60) . "\n";
+
+if (count($errors) === 0) {
+    if (count($warnings) === 0) {
+        echo "🎉 PERFEITO! Todas as otimizações estão ativas.\n";
+        echo "   Performance esperada: 16k+ req/s em leitura\n";
+        exit(0);
+    } else {
+        echo "✅ BOM! Sistema funcional com algumas otimizações pendentes.\n";
+        echo "   Aplique os avisos acima para máxima performance.\n";
+        exit(0);
+    }
+} else {
+    echo "❌ PROBLEMAS DETECTADOS! Corrija os erros acima.\n";
+    exit(1);
+}
