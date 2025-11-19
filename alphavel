@@ -1,24 +1,24 @@
 #!/usr/bin/env php
 <?php
 /**
- * pfast CLI - Artisan-like Console
+ * alphavel CLI - Artisan-like Console
  * 
  * Usage:
- *   ./pfast list
- *   ./pfast make:controller UserController
- *   ./pfast make:model User
- *   ./pfast cache:clear
- *   ./pfast serve
+ *   ./alphavel list
+ *   ./alphavel make:controller UserController
+ *   ./alphavel make:model User
+ *   ./alphavel cache:clear
+ *   ./alphavel serve
  */
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Pfast\Core\Console\Console;
+use Alphavel\Framework\Console\Console;
 
 // Create console application
 $console = new Console();
-$console->setName('pfast');
-$console->setVersion('2.0.0');
+$console->setName('alphavel');
+$console->setVersion('1.0.0');
 
 // Auto-discover commands from core
 $console->autodiscover(__DIR__ . '/packages/core/src/Console/Commands');

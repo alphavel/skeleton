@@ -5,12 +5,18 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
-## [2.0.0] - 2025-01-19
+## [1.0.0] - 2025-11-19
 
-### 💥 Breaking Changes
+### ✨ Lançamento Inicial
 
-- **Removido requisito manual do setup.sh**: Agora toda configuração é automática via Composer hooks
-- **Extensão Swoole movida de obrigatória para sugerida**: Permite instalação sem Swoole local (usando Docker)
+Primeira versão estável do Alphavel Framework - framework PHP moderno baseado em Swoole.
+
+### 🎯 Principais Características
+
+- **Setup automático via Composer**: Processo idêntico ao Laravel, sem etapas manuais
+- **Extensão Swoole opcional**: Permite desenvolvimento com Docker sem instalação local
+- **Performance excepcional**: Até 520.000+ requisições por segundo com Swoole
+- **Arquitetura limpa**: Inspirada no Laravel, fácil de aprender e usar
 
 ### ✨ Adicionado
 
@@ -73,25 +79,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - README expandido com seções de troubleshooting
 - Comparação explícita com Laravel
 
-## [2.0.1] - 2025-01-18
-
-### 🐛 Corrigido
-
-- Pequenos ajustes em documentação
-- Correções de typos no README
-
-## [2.0.0] - 2025-01-15
-
-### ✨ Inicial
-
-- Lançamento inicial do Alphavel Skeleton v2.0
-- Framework baseado em Swoole
-- Estrutura inspirada no Laravel
-- Docker support
-- Performance de 520k+ req/s
-
 ---
 
-[2.0.0]: https://github.com/alphavel/skeleton/releases/tag/v2.0.0
-[2.0.1]: https://github.com/alphavel/skeleton/releases/tag/v2.0.1
-[Unreleased]: https://github.com/alphavel/skeleton/compare/v2.0.1...HEAD
+[1.0.0]: https://github.com/alphavel/skeleton/releases/tag/v1.0.0
+[Unreleased]: https://github.com/alphavel/skeleton/compare/v1.0.0...HEAD
