@@ -1,862 +1,471 @@
-# Alphavel Application Skeleton# Alphavel Application Skeleton
+# Alphavel Application Skeleton
 
+> Minimal application starter for Alphavel Framework - Swoole-powered PHP framework achieving 520k+ req/s
 
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.1-blue.svg)](https://php.net)
+[![Swoole](https://img.shields.io/badge/swoole-required-red.svg)](https://www.swoole.co.uk/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-> Minimal application starter for Alphavel Framework - Swoole-powered PHP framework achieving 520k+ req/s> Minimal application starter for Alphavel Framework - Swoole-powered PHP framework achieving 520k+ req/s
+---
 
+## 🚀 Quick Start
 
+### Option 1: Docker Dev (Recommended - Sem Swoole local!)
 
-[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.1-blue.svg)](https://php.net)[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.1-blue.svg)](https://php.net)
-
-[![Swoole](https://img.shields.io/badge/swoole-required-red.svg)](https://www.swoole.co.uk/)[![Swoole](https://img.shields.io/badge/swoole-required-red.svg)](https://www.swoole.co.uk/)
-
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-
-
-
-------
-
-
-
-## 🚀 Quick Start## 🚀 Quick Start
-
-
-
-### Option 1: Automated Installation (Recommended)### Installation (Recommended: Docker)
-
-
-
-```bash### Option 1: Docker (Recommended - No Swoole installation needed!)
-
-# Download and run installer
-
-curl -O https://raw.githubusercontent.com/alphavel/skeleton/main/install.sh```bash
-
-bash install.sh my-app# Create project
-
-composer create-project alphavel/skeleton my-app
-
-# Or if you already have the skeletoncd my-app
-
-cd my-app
-
-bash install.sh .# Start application (minimal - just Alphavel)
-
-```docker-compose up
-
-
-
-The installer will:# Access
-
-- ✅ Create project structure via Composercurl http://localhost:9999
-
-- ✅ Set up Docker containers (app + MySQL)```
-
-- ✅ Create required directories
-
-- ✅ Generate configuration files### Option 2: Local Installation
-
-- ✅ Start the server automatically
+**Ideal para desenvolvimento local sem precisar instalar Swoole na máquina:**
 
 ```bash
-
-**Access**: http://localhost:8080# Create project
-
+# Clonar ou criar projeto
 composer create-project alphavel/skeleton my-app
-
-### Option 2: Manual Installation with Dockercd my-app
-
-
-
-```bash# Install Swoole extension
-
-# 1. Create project# Ubuntu/Debian
-
-composer create-project alphavel/skeleton my-appsudo apt install php-swoole php-mbstring
-
 cd my-app
 
-# macOS
+# Iniciar ambiente de desenvolvimento (instala tudo automaticamente)
+docker-compose -f docker-compose.dev.yml up
+```
 
-# 2. Start with Docker Composebrew install php-swoole
+**O que acontece automaticamente:**
+- ✅ Instala Swoole no container
+- ✅ Instala Composer
+- ✅ Instala todas as dependências do projeto
+- ✅ Cria estrutura de diretórios necessária
+- ✅ Configura permissões corretas
+- ✅ Gera arquivo .env
+- ✅ Inicia servidor Swoole
 
+**Acesse:** http://localhost:8080
+
+**Comandos úteis:**
+```bash
+# Parar
+docker-compose -f docker-compose.dev.yml down
+
+# Ver logs
+docker-compose -f docker-compose.dev.yml logs -f app
+
+# Acessar shell do container
+docker-compose -f docker-compose.dev.yml exec app bash
+
+# Reinstalar dependências
+docker-compose -f docker-compose.dev.yml exec app composer install
+```
+
+### Option 2: Docker Production
+
+**Para produção ou quando já tem o projeto configurado:**
+
+```bash
+# Criar projeto
+composer create-project alphavel/skeleton my-app
+cd my-app
+
+# Iniciar aplicação (requer build)
 docker-compose up -d
 
-# PECL
-
-# 3. Access applicationsudo pecl install swoole
-
+# Acesse
 curl http://localhost:8080
+```
 
-```# Copy environment file
+### Option 3: Instalação Local (Swoole necessário)
 
-cp .env.example .env
-
-### Option 3: Local Installation (Swoole required)
-
-# Start server
-
-```bashphp public/index.php
-
-# 1. Create project```
-
+```bash
+# Create project
 composer create-project alphavel/skeleton my-app
+cd my-app
 
-cd my-appVisit: http://localhost:9999
+# Install Swoole extension
+# Ubuntu/Debian
+sudo apt install php-swoole php-mbstring
 
+# macOS
+brew install php-swoole
 
-
-# 2. Install Swoole extension## Project Structure
-
+# PECL
 sudo pecl install swoole
 
-# Or: sudo apt install php-swoole (Ubuntu/Debian)```
+# Copy environment file
+cp .env.example .env
 
-# Or: brew install php-swoole (macOS)my-app/
+# Start server
+php public/index.php
+```
 
+Visit: http://localhost:9999
+
+## Project Structure
+
+```
+my-app/
 ├── app/
-
-# 3. Copy environment file│   └── Controllers/
-
-cp .env.example .env│       └── HomeController.php
-
+│   └── Controllers/
+│       └── HomeController.php
 ├── bootstrap/
-
-# 4. Start server│   └── app.php              # Application bootstrap
-
-php public/index.php├── config/
-
-```│   └── app.php              # Configuration
-
+│   └── app.php              # Application bootstrap
+├── config/
+│   └── app.php              # Configuration
 ├── public/
-
-**Access**: http://localhost:9501│   └── index.php            # Entry point
-
+│   └── index.php            # Entry point
 ├── routes/
-
----│   └── api.php              # Route definitions
-
+│   └── api.php              # Route definitions
 ├── storage/
-
-## 📦 What's Included│   ├── framework/           # Framework cache
-
+│   ├── framework/           # Framework cache
 │   └── logs/                # Application logs
-
-This skeleton provides a **minimal foundation**:├── tests/                   # PHPUnit tests
-
+├── tests/                   # PHPUnit tests
 ├── Dockerfile               # Docker image
+├── docker-compose.yml       # Docker orchestration
+└── composer.json
+```
 
-- ✅ **Alphavel Core** - Router, HTTP Server, Container, Facades├── docker-compose.yml       # Docker orchestration
+## Install Additional Packages (Optional)
 
-- ✅ **Basic Structure** - Controllers, routes, configuration└── composer.json
-
-- ✅ **Docker Setup** - Dockerfile + docker-compose.yml with MySQL```
-
-- ✅ **Example Endpoints** - Sample controller to get started
-
-- ✅ **Makefile** - Convenient commands for common tasks## Install Additional Packages (Optional)
-
-
-
-**No database layer, cache, or logging by default.** Perfect for microservices!```bash
-
+```bash
 # Database (ORM, Query Builder, Migrations)
-
----composer require alphavel/database
-
-
-
-## 🔌 Install Additional Packages# Cache (Redis, File, Memory drivers)
-
-composer require alphavel/cache
-
-Add only what your project needs:
-
-# Events (Event Dispatcher & Listeners)
-
-```bashcomposer require alphavel/events
-
-# Database (ORM, Query Builder, Migrations)
-
-composer require alphavel/database# Logging (PSR-3 compliant logger)
-
-composer require alphavel/logging
+composer require alphavel/database
 
 # Cache (Redis, File, Memory drivers)
+composer require alphavel/cache
 
-composer require alphavel/cache# Validation (Input validation rules)
-
-composer require alphavel/validation
-
-# Events (Event Dispatcher & Listeners)```
-
+# Events (Event Dispatcher & Listeners)
 composer require alphavel/events
+
+# Logging (PSR-3 compliant logger)
+composer require alphavel/logging
+
+# Validation (Input validation rules)
+composer require alphavel/validation
+```
 
 **After installing packages, update your `.env`:**
 
-# Logging (PSR-3 compliant logger)
-
-composer require alphavel/logging```env
-
+```env
 # For Docker (use service names)
+DB_HOST=mysql          # or 'postgres'
+REDIS_HOST=redis
 
-# Validation (Input validation rules)DB_HOST=mysql          # or 'postgres'
-
-composer require alphavel/validationREDIS_HOST=redis
-
-
-
-# Support (Helper functions and collections)# For local installation
-
-composer require alphavel/supportDB_HOST=localhost
-
-```REDIS_HOST=localhost
-
+# For local installation
+DB_HOST=localhost
+REDIS_HOST=localhost
 ```
-
----
 
 ## Docker Commands
 
-## 📁 Project Structure
-
 ```bash
+# Start services
+docker-compose up -d
 
-```# Start services
+# Stop services
+docker-compose down
 
-my-app/docker-compose up -d
+# View logs
+docker-compose logs -f app
 
-├── app/
+# Restart application
+docker-compose restart app
 
-│   └── Controllers/# Stop services
+# Run commands inside container
+docker-compose exec app php -v
+docker-compose exec app composer install
+docker-compose exec app ./vendor/bin/phpunit
 
-│       └── HomeController.php    # Example controllerdocker-compose down
-
-├── bootstrap/
-
-│   ├── app.php                   # Application bootstrap# View logs
-
-│   └── cache/                    # Cache directorydocker-compose logs -f app
-
-├── config/
-
-│   └── app.php                   # Configuration# Restart application
-
-├── public/docker-compose restart app
-
-│   └── index.php                 # Entry point (Swoole server)
-
-├── routes/# Run commands inside container
-
-│   └── api.php                   # Route definitionsdocker-compose exec app php -v
-
-├── storage/docker-compose exec app composer install
-
-│   ├── framework/                # Framework cache (facades, etc)docker-compose exec app ./vendor/bin/phpunit
-
-│   ├── logs/                     # Application logs
-
-│   └── cache/                    # Application cache# Clean everything (including volumes)
-
-├── tests/                        # PHPUnit testsdocker-compose down -v
-
-│   ├── bootstrap.php```
-
-│   ├── TestCase.php
-
-│   └── Feature/### Adding Optional Services
-
-├── .env.example                  # Environment configuration template
-
-├── composer.json                 # Dependencies1. Copy the example file:
-
-├── docker-compose.yml            # Docker orchestration```bash
-
-├── Dockerfile                    # Container imagecp docker-compose.example.yml docker-compose.override.yml
-
-├── Makefile                      # Helper commands```
-
-└── install.sh                    # Automated installer
-
-```2. Edit `docker-compose.override.yml` and uncomment services you need:
-
-   - **MySQL** - Relational database (port 3306)
-
----   - **Redis** - High-performance cache (port 6379)
-
-
-
-## 🐳 Docker Commands3. Update your `.env`:
-
-```env
-
-### Using Makefile (Recommended)# For MySQL
-
-DB_HOST=mysql
-
-```bashDB_DATABASE=alphavel
-
-# View all available commandsDB_USERNAME=root
-
-make helpDB_PASSWORD=secret
-
-
-
-# Start application# For Redis
-
-make startREDIS_HOST=redis
-
+# Clean everything (including volumes)
+docker-compose down -v
 ```
 
-# Stop application
+### Adding Optional Services
 
-make stop4. Start services:
-
+1. Copy the example file:
 ```bash
+cp docker-compose.example.yml docker-compose.override.yml
+```
 
-# View logsdocker-compose up -d
+2. Edit `docker-compose.override.yml` and uncomment services you need:
+   - **MySQL** - Relational database (port 3306)
+   - **Redis** - High-performance cache (port 6379)
 
-make logs```
+3. Update your `.env`:
+```env
+# For MySQL
+DB_HOST=mysql
+DB_DATABASE=alphavel
+DB_USERNAME=root
+DB_PASSWORD=secret
 
+# For Redis
+REDIS_HOST=redis
+```
 
+4. Start services:
+```bash
+docker-compose up -d
+```
 
-# Access container shell## Configuration
-
-make shell
+## Configuration
 
 Copy `.env.example` to `.env` and adjust settings:
 
-# Run composer commands
-
-make composer ARGS="require alphavel/database"```bash
-
+```bash
 cp .env.example .env
-
-# Run tests```
-
-make test
+```
 
 ### Docker Environment
 
-# Clean and rebuild
-
-make rebuildWhen using Docker Compose, use service names as hosts:
-
-```
+When using Docker Compose, use service names as hosts:
 
 ```env
-
-### Using docker-compose directlyDB_HOST=mysql        # Not 'localhost'
-
+DB_HOST=mysql        # Not 'localhost'
 REDIS_HOST=redis     # Not 'localhost'
-
-```bash```
-
-# Start services
-
-docker-compose up -d### Local Environment
-
-
-
-# Stop servicesWhen running locally, use localhost:
-
-docker-compose down
-
-```env
-
-# View logsDB_HOST=localhost
-
-docker-compose logs -f appREDIS_HOST=localhost
-
 ```
 
-# Access shell
+### Local Environment
 
-docker-compose exec app bash## Running Tests
+When running locally, use localhost:
 
+```env
+DB_HOST=localhost
+REDIS_HOST=localhost
+```
 
+## Running Tests
 
-# Run composer```bash
+```bash
+# Local
+./vendor/bin/phpunit
 
-docker-compose exec app composer install# Local
-
-```./vendor/bin/phpunit
-
-
-
----# Docker
-
+# Docker
 docker-compose exec app ./vendor/bin/phpunit
+```
 
-## ⚙️ Configuration```
+## Performance
 
-
-
-### Environment Variables## Performance
-
-
-
-Copy `.env.example` to `.env` and customize:Alphavel Framework with Swoole delivers:
-
+Alphavel Framework with Swoole delivers:
 - **520,000+ requests/second** (async mode)
+- **0.3MB memory** per request
+- **<1ms** response time
 
-```env- **0.3MB memory** per request
+vs Traditional PHP-FPM: ~2,000 req/s
 
-# Application- **<1ms** response time
+## Why Swoole?
 
-APP_NAME="My Alphavel App"
-
-APP_ENV=localvs Traditional PHP-FPM: ~2,000 req/s
-
-APP_DEBUG=true
-
-APP_PORT=9501## Why Swoole?
-
-
-
-# Database (when using Docker)Swoole provides:
-
-DB_HOST=db                # Use 'db' for Docker, 'localhost' for local- ✅ Persistent connections
-
-DB_PORT=3306- ✅ Coroutines (async/await)
-
-DB_DATABASE=alphavel- ✅ Built-in HTTP/WebSocket server
-
-DB_USERNAME=alphavel- ✅ 260x faster than PHP-FPM
-
-DB_PASSWORD=alphavel
+Swoole provides:
+- ✅ Persistent connections
+- ✅ Coroutines (async/await)
+- ✅ Built-in HTTP/WebSocket server
+- ✅ 260x faster than PHP-FPM
 
 ## Documentation
 
-# Cache (if alphavel/cache is installed)
+- Framework: https://github.com/alphavel/alphavel
+- Packages: https://github.com/alphavel
+- Swoole: https://www.swoole.co.uk/
 
-CACHE_DRIVER=file- Framework: https://github.com/alphavel/alphavel
+## License
 
-REDIS_HOST=127.0.0.1- Packages: https://github.com/alphavel
+MIT
 
-REDIS_PORT=6379- Swoole: https://www.swoole.co.uk/
-
-
-
-# Swoole Server## License
-
-SERVER_HOST=0.0.0.0
-
-SERVER_PORT=9501MIT
-
-SWOOLE_WORKER_NUM=4
-
-```
 
 > Minimal application structure for Alphavel Framework - install only what you need!
 
-**Important**: When using Docker, set `DB_HOST=db` (service name), not `localhost`.
-
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D8.1-blue.svg)](https://php.net)
-
----[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-
-
-
-## 📝 Creating Your First Endpoint---
-
-
-
-### 1. Define Route## 🚀 Quick Start
-
-
-
-Edit `routes/api.php`:```bash
-
-# Create new project
-
-```phpcomposer create-project alphavel/skeleton my-app
-
-<?phpcd my-app
-
-
-
-$router->get('/hello/{name}', [\App\Controllers\HomeController::class, 'hello']);# Start development server
-
-```php -S localhost:8000 -t public
-
-```
-
-### 2. Create Controller
-
-Visit: http://localhost:8000
-
-Create `app/Controllers/HomeController.php`:
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 ---
 
-```php
+## 🚀 Quick Start
 
-<?php## 📦 What's Included
+```bash
+# Create new project
+composer create-project alphavel/skeleton my-app
+cd my-app
 
+# Start development server
+php -S localhost:8000 -t public
+```
 
+Visit: http://localhost:8000
 
-namespace App\Controllers;This skeleton comes with **minimal dependencies** - only the Alphavel core:
+---
 
+## 📦 What's Included
 
+This skeleton comes with **minimal dependencies** - only the Alphavel core:
 
-use Alphavel\Framework\Controller;- ✅ **alphavel/alphavel** - Framework core (Router, HTTP, Container, Facades)
+- ✅ **alphavel/alphavel** - Framework core (Router, HTTP, Container, Facades)
+- ✅ Basic application structure (controllers, routes, config)
+- ✅ Example endpoints
 
-use Alphavel\Framework\Request;- ✅ Basic application structure (controllers, routes, config)
+**No database, cache, or logging by default.** Perfect for microservices and APIs!
 
-use Alphavel\Framework\Response;- ✅ Example endpoints
+---
 
+## 🔌 Install Additional Packages (Optional)
 
+Add only what your project needs:
 
-class HomeController extends Controller**No database, cache, or logging by default.** Perfect for microservices and APIs!
+```bash
+# Database (ORM, Query Builder, Migrations)
+composer require alphavel/database
 
-{
-
-    public function hello(Request $request, string $name)---
-
-    {
-
-        return Response::json([## 🔌 Install Additional Packages (Optional)
-
-            'message' => "Hello, {$name}!",
-
-            'timestamp' => time()Add only what your project needs:
-
-        ]);
-
-    }```bash
-
-}# Database (ORM, Query Builder, Migrations)
-
-```composer require alphavel/database
-
-
-
-### 3. Test# Cache (Redis, File, Memory drivers)
-
+# Cache (Redis, File, Memory drivers)
 composer require alphavel/cache
 
-```bash
-
-curl http://localhost:8080/hello/World# Events (Event Dispatcher & Listeners)
-
-# {"message":"Hello, World!","timestamp":1700000000}composer require alphavel/events
-
-```
+# Events (Event Dispatcher & Listeners)
+composer require alphavel/events
 
 # Logging (PSR-3 compliant logger)
+composer require alphavel/logging
 
----composer require alphavel/logging
-
-
-
-## 🧪 Running Tests# Validation (Input validation rules)
-
+# Validation (Input validation rules)
 composer require alphavel/validation
 
-```bash
-
-# Using Makefile# Support (Helper functions and collections)
-
-make testcomposer require alphavel/support
-
+# Support (Helper functions and collections)
+composer require alphavel/support
 ```
 
-# Using composer
+---
 
-composer test---
-
-
-
-# Using Docker## 📁 Project Structure
-
-docker-compose exec app vendor/bin/phpunit
+## 📁 Project Structure
 
 ```
-
-# With coveragemy-app/
-
-composer test-coverage├── app/
-
-```│   └── Controllers/
-
+my-app/
+├── app/
+│   └── Controllers/
 │       └── HomeController.php    # Welcome endpoint
-
----├── bootstrap/
-
+├── bootstrap/
 │   └── app.php                   # Application bootstrap
-
-## ⚡ Performance├── config/
-
+├── config/
 │   └── app.php                   # Configuration
-
-Alphavel with Swoole delivers exceptional performance:├── public/
-
+├── public/
 │   └── index.php                 # Entry point
-
-- **520,000+ req/s** - Async/coroutine mode├── routes/
-
-- **0.3MB memory** - Minimal footprint│   └── api.php                   # API routes
-
-- **<1ms response time** - Average latency├── storage/
-
+├── routes/
+│   └── api.php                   # API routes
+├── storage/
 │   ├── logs/
-
-### vs Traditional PHP-FPM│   └── framework/
-
+│   └── framework/
 └── composer.json
+```
 
-| Framework | Req/s | Memory |```
-
-|-----------|-------|--------|
-
-| Alphavel + Swoole | 520,000 | 0.3MB |---
-
-| Laravel + FPM | 2,000 | 12MB |
+---
 
 ## ⚡ Why Alphavel?
 
-**260x faster** than traditional PHP-FPM setups!
-
 - **520k+ requests/second** - Swoole-powered performance
-
----- **0.3MB memory footprint** - For minimal setups
-
+- **0.3MB memory footprint** - For minimal setups
 - **Modular** - Install only what you need
-
-## 🎯 Why Swoole?- **Laravel-style** - Familiar syntax and patterns
-
+- **Laravel-style** - Familiar syntax and patterns
 - **PSR Compliant** - Follows PHP standards
 
-Swoole provides:
+---
 
-- ✅ **Persistent Connections** - Application stays in memory---
+## 📚 Documentation
 
-- ✅ **Coroutines** - Async/await for non-blocking I/O
-
-- ✅ **Built-in HTTP Server** - No Nginx/Apache needed## 📚 Documentation
-
-- ✅ **WebSocket Support** - Real-time communication
-
-- ✅ **Process Management** - Worker pools and task queues- **Framework Core:** https://github.com/alphavel/alphavel
-
+- **Framework Core:** https://github.com/alphavel/alphavel
 - **All Packages:** https://github.com/alphavel
 
 ---
 
----
-
-## 🚀 Production Deployment
-
 ## 🎯 Perfect For
 
-### Docker Production Build
-
 ✅ Microservices and APIs  
+✅ High-performance web applications  
+✅ Real-time applications with Swoole  
+✅ Lightweight projects that need speed  
 
-```dockerfile✅ High-performance web applications  
+---
 
-# Dockerfile.prod✅ Real-time applications with Swoole  
+## � License
 
-FROM php:8.2-cli✅ Lightweight projects that need speed  
-
-
-
-# Install dependencies---
-
-RUN apt-get update && apt-get install -y \
-
-    libssl-dev \## � License
-
-    && pecl install swoole \
-
-    && docker-php-ext-enable swooleMIT License - see [LICENSE](LICENSE) file for details
+MIT License - see [LICENSE](LICENSE) file for details
 
 
 
-# Copy application
+- ⚡ **Ultra-fast** - Powered by Swoole, achieving 520k+ req/s```php
 
-COPY . /var/www
-
-WORKDIR /var/www- ⚡ **Ultra-fast** - Powered by Swoole, achieving 520k+ req/s```php
-
-
-
-# Install dependencies- 🏗️ **Modular** - Clean multi-repo architecture with independent packages// API Gateway (no database needed)
-
-RUN composer install --no-dev --optimize-autoloader
+- 🏗️ **Modular** - Clean multi-repo architecture with independent packages// API Gateway (no database needed)
 
 - 📦 **PSR Compliant** - PSR-3 (Logger), PSR-4 (Autoloading), PSR-11 (Container)✅ Core only: 520k req/s, 0.3MB
 
-# Optimize
+- 🎨 **Auto Facades** - Laravel-style facades with zero configuration❌ Laravel: 8.5k req/s, 12MB
 
-RUN php artisan config:cache || true- 🎨 **Auto Facades** - Laravel-style facades with zero configuration❌ Laravel: 8.5k req/s, 12MB
-
-
-
-CMD ["php", "public/index.php"]- 🔄 **Auto-Discovery** - Service providers automatically discovered via Composer
-
-```
+- 🔄 **Auto-Discovery** - Service providers automatically discovered via Composer
 
 - 🚀 **Modern PHP** - Requires PHP 8.1+ with full type safety// API + Database
 
-### Supervisor Configuration
-
 - 💉 **DI Container** - Powerful dependency injection container✅ Core + DB: 480k req/s, 1.2MB
 
-```ini
+- 🗄️ **Query Builder** - Fluent database query builder❌ Hyperf: 170k req/s, 2.1MB
 
-[program:alphavel]- 🗄️ **Query Builder** - Fluent database query builder❌ Hyperf: 170k req/s, 2.1MB
+- 📝 **Validation** - Built-in request validation
 
-command=php /var/www/public/index.php
+- 📊 **Logging** - PSR-3 compliant logger// Full Stack (all plugins)
 
-directory=/var/www- 📝 **Validation** - Built-in request validation
+- ⚡ **Caching** - High-performance cache layer✅ All plugins: 387k req/s, 4MB
 
-autostart=true
-
-autorestart=true- 📊 **Logging** - PSR-3 compliant logger// Full Stack (all plugins)
-
-user=www-data
-
-numprocs=1- ⚡ **Caching** - High-performance cache layer✅ All plugins: 387k req/s, 4MB
-
-redirect_stderr=true
-
-stdout_logfile=/var/www/storage/logs/supervisor.log- 📢 **Events** - Event dispatcher with observers❌ Laravel Octane: 8.5k req/s, 12MB
+- 📢 **Events** - Event dispatcher with observers❌ Laravel Octane: 8.5k req/s, 12MB
 
 ```
-
-```
-
-### Nginx Reverse Proxy (Optional)
 
 ---
 
-```nginx
+### PSR Compliant
 
-upstream alphavel_backend {### PSR Compliant
+## 📦 Installation
 
-    server 127.0.0.1:9501;
+- ✅ PSR-1 (Basic Coding Standard)
 
-}## 📦 Installation
+### Create New Project- ✅ PSR-3 (Logger Interface)
 
+- ✅ PSR-4 (Autoloader)
 
+```bash- ✅ PSR-11 (Container Interface)
 
-server {- ✅ PSR-1 (Basic Coding Standard)
+composer create-project alphavel/skeleton my-app- ✅ PSR-12 (Extended Coding Style)
 
-    listen 80;
-
-    server_name api.example.com;### Create New Project- ✅ PSR-3 (Logger Interface)
-
-
-
-    location / {- ✅ PSR-4 (Autoloader)
-
-        proxy_pass http://alphavel_backend;
-
-        proxy_set_header Host $host;```bash- ✅ PSR-11 (Container Interface)
-
-        proxy_set_header X-Real-IP $remote_addr;
-
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;composer create-project alphavel/skeleton my-app- ✅ PSR-12 (Extended Coding Style)
-
-    }
-
-}cd my-app
-
-```
+cd my-app
 
 php alphavel serve**Performance:** 0% overhead (verified with PHP_CodeSniffer)
 
----
-
 ```
 
-## 📚 Documentation
-
 ---
 
-- **Framework Core**: [alphavel/alphavel](https://github.com/alphavel/alphavel)
+### Add to Existing Project
 
-- **Database Package**: [alphavel/database](https://github.com/alphavel/database)### Add to Existing Project
-
-- **Cache Package**: [alphavel/cache](https://github.com/alphavel/cache)
-
-- **All Packages**: [github.com/alphavel](https://github.com/alphavel)## 📦 Features
-
-- **Swoole Docs**: [swoole.co.uk](https://www.swoole.co.uk/)
+## 📦 Features
 
 ```bash
 
----
-
 composer require alphavel/alphavel### Core Features
-
-## 🤝 Contributing
 
 ```- ⚡ **520k req/s** - Fastest PHP framework with Swoole
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
-
 - 🎯 **Modular** - 7 independent packages
 
-1. Fork the repository
+---- 🔧 **PSR Compliant** - 5/7 PSRs implemented
 
-2. Create feature branch (`git checkout -b feature/amazing`)---- 🔧 **PSR Compliant** - 5/7 PSRs implemented
-
-3. Commit changes (`git commit -m 'Add feature'`)
-
-4. Push to branch (`git push origin feature/amazing`)- 🎨 **Laravel-style API** - Facades, Collections, Helpers
-
-5. Open Pull Request
+- 🎨 **Laravel-style API** - Facades, Collections, Helpers
 
 ## 🏗️ Architecture- 🔥 **Auto-discovery** - Composer-based plugin system
 
----
-
 - 🎭 **Auto-facades** - Zero-overhead static proxies
-
-## 📄 License
 
 Alphavel follows a **multi-repository architecture**, similar to Laravel's Illuminate packages:
 
-The Alphavel Framework is open-sourced software licensed under the [MIT license](LICENSE).
-
 ### Plugin System
-
----
 
 ### Core Packages- **Core** (required) - 13 classes, 0.3MB, 520k req/s
 
-## 🔗 Links
-
 - **Database** (optional) - QueryBuilder, Active Record
 
-- **GitHub**: [github.com/alphavel](https://github.com/alphavel)
-
-- **Packagist**: [packagist.org/packages/alphavel](https://packagist.org/packages/alphavel/)| Package | Description | Version |- **Cache** (optional) - File/Redis with remember pattern
-
-- **Issues**: [github.com/alphavel/alphavel/issues](https://github.com/alphavel/alphavel/issues)
+| Package | Description | Version |- **Cache** (optional) - File/Redis with remember pattern
 
 |---------|-------------|---------|- **Validation** (optional) - 10+ validation rules
 
----
-
 | [alphavel/alphavel](https://github.com/alphavel/alphavel) | Framework core components | [![Latest](https://img.shields.io/packagist/v/alphavel/alphavel)](https://packagist.org/packages/alphavel/alphavel) |- **Events** (optional) - Pub/sub event system
 
-<p align="center">
-
-  <strong>Alphavel Framework</strong> - Fast, Modular, Modern PHP| [alphavel/database](https://github.com/alphavel/database) | Database & Query Builder | [![Latest](https://img.shields.io/packagist/v/alphavel/database)](https://packagist.org/packages/alphavel/database) |- **Logging** (optional) - PSR-3 compliant logger
-
-</p>
+| [alphavel/database](https://github.com/alphavel/database) | Database & Query Builder | [![Latest](https://img.shields.io/packagist/v/alphavel/database)](https://packagist.org/packages/alphavel/database) |- **Logging** (optional) - PSR-3 compliant logger
 
 | [alphavel/cache](https://github.com/alphavel/cache) | Cache layer (Redis, etc) | [![Latest](https://img.shields.io/packagist/v/alphavel/cache)](https://packagist.org/packages/alphavel/cache) |- **Support** (optional) - Collections, helpers
 
-<p align="center">
-
-  Made with ❤️ by the Alphavel Team| [alphavel/validation](https://github.com/alphavel/validation) | Request validation | [![Latest](https://img.shields.io/packagist/v/alphavel/validation)](https://packagist.org/packages/alphavel/validation) |
-
-</p>
+| [alphavel/validation](https://github.com/alphavel/validation) | Request validation | [![Latest](https://img.shields.io/packagist/v/alphavel/validation)](https://packagist.org/packages/alphavel/validation) |
 
 | [alphavel/events](https://github.com/alphavel/events) | Event dispatcher | [![Latest](https://img.shields.io/packagist/v/alphavel/events)](https://packagist.org/packages/alphavel/events) |---
 

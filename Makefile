@@ -1,16 +1,45 @@
-.PHONY: help install start stop restart logs logs-db shell composer clean rebuild test
+.PHONY: help install dev dev-stop dev-logs dev-shell start stop restart logs logs-db shell composer clean rebuild test
 
 .DEFAULT_GOAL := help
 
 help: ## Mostra esta mensagem de ajuda
 	@echo "Comandos disponíveis para Alphavel Framework:"
 	@echo ""
+	@echo "💡 Para desenvolvimento local (sem Swoole instalado):"
+	@echo "   make dev       - Inicia ambiente de desenvolvimento"
+	@echo "   make dev-stop  - Para ambiente de desenvolvimento"
+	@echo "   make dev-logs  - Ver logs do ambiente de desenvolvimento"
+	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 install: ## Instala o projeto completo (primeira vez)
 	@bash install.sh .
 
-start: ## Inicia os containers
+dev: ## Inicia ambiente de desenvolvimento (instala Swoole automaticamente)
+	@echo "🚀 Iniciando ambiente de desenvolvimento..."
+	@echo "⏳ Primeira execução pode levar alguns minutos (instalação do Swoole)"
+	@docker-compose -f docker-compose.dev.yml up
+	@echo "✅ Ambiente de desenvolvimento pronto"
+	@echo "🌐 Aplicação disponível em: http://localhost:8080"
+
+dev-stop: ## Para o ambiente de desenvolvimento
+	@echo "⏸️  Parando ambiente de desenvolvimento..."
+	@docker-compose -f docker-compose.dev.yml down
+	@echo "✅ Ambiente de desenvolvimento parado"
+
+dev-logs: ## Mostra os logs do ambiente de desenvolvimento
+	@docker-compose -f docker-compose.dev.yml logs -f app
+
+dev-shell: ## Acessa o shell do container de desenvolvimento
+	@docker-compose -f docker-compose.dev.yml exec app bash
+
+dev-rebuild: ## Reconstrói o ambiente de desenvolvimento
+	@echo "🔨 Reconstruindo ambiente de desenvolvimento..."
+	@docker-compose -f docker-compose.dev.yml down -v
+	@docker-compose -f docker-compose.dev.yml up --build
+	@echo "✅ Ambiente reconstruído"
+
+start: ## Inicia os containers (produção)
 	@echo "🚀 Iniciando containers..."
 	@docker-compose up -d
 	@echo "✅ Containers iniciados"
