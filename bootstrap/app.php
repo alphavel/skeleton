@@ -20,6 +20,7 @@ if (!extension_loaded('swoole')) {
 $app = Application::getInstance();
 
 $app->loadConfig(__DIR__.'/../config/app.php');
+$app->loadConfig(__DIR__.'/../config/swoole.php');
 
 $app->register(CoreServiceProvider::class);
 
@@ -46,6 +47,12 @@ if (file_exists($facadeFile)) {
 
 // Load routes
 $router = $app->make('router');
-require __DIR__.'/../routes/api.php';
+$routesCache = __DIR__ . '/../storage/cache/routes.php';
+
+if (file_exists($routesCache)) {
+    $router->loadCachedRoutes(require $routesCache);
+} else {
+    require __DIR__.'/../routes/api.php';
+}
 
 return $app;
