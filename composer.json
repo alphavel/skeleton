@@ -35,17 +35,36 @@
     },
     "scripts": {
         "post-create-project-cmd": [
+            "@php -r \"file_exists('storage/framework') || mkdir('storage/framework', 0777, true);\"",
+            "@php -r \"file_exists('storage/logs') || mkdir('storage/logs', 0777, true);\"",
+            "@php -r \"file_exists('storage/cache') || mkdir('storage/cache', 0777, true);\"",
+            "@php -r \"file_exists('bootstrap/cache') || mkdir('bootstrap/cache', 0777, true);\"",
+            "@php -r \"file_put_contents('storage/framework/facades.php', '<?php\\n');\"",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php -r \"echo '\\n✅ Alphavel Framework installed successfully!\\n';\"",
             "@php -r \"echo '\\n📦 Suggested packages:\\n';\"",
             "@php -r \"echo '   composer require alphavel/database\\n';\"",
             "@php -r \"echo '   composer require alphavel/cache\\n';\"",
             "@php -r \"echo '\\n🚀 Get started:\\n';\"",
+            "@php -r \"echo '   docker-compose up -d  # Or:\\n';\"",
             "@php -r \"echo '   php public/index.php\\n';\"",
             "@php -r \"echo '\\n📖 Docs: https://github.com/alphavel/alphavel\\n\\n';\""
         ],
+        "post-install-cmd": [
+            "@php -r \"file_exists('storage/framework') || mkdir('storage/framework', 0777, true);\"",
+            "@php -r \"file_exists('storage/logs') || mkdir('storage/logs', 0777, true);\"",
+            "@php -r \"file_exists('storage/cache') || mkdir('storage/cache', 0777, true);\"",
+            "@php -r \"file_exists('bootstrap/cache') || mkdir('bootstrap/cache', 0777, true);\"",
+            "@php -r \"file_exists('storage/framework/facades.php') || file_put_contents('storage/framework/facades.php', '<?php\\n');\""
+        ],
+        "post-update-cmd": [
+            "@php -r \"file_exists('storage/framework') || mkdir('storage/framework', 0777, true);\"",
+            "@php -r \"file_exists('storage/framework/facades.php') || file_put_contents('storage/framework/facades.php', '<?php\\n');\""
+        ],
         "test": "phpunit",
-        "test-coverage": "phpunit --coverage-html coverage"
+        "test-coverage": "phpunit --coverage-html coverage",
+        "start": "php public/index.php",
+        "dev": "php public/index.php"
     },
     "config": {
         "optimize-autoloader": true,

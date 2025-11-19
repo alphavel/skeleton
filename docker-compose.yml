@@ -6,25 +6,60 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: alphavel-app
+    restart: unless-stopped
+    working_dir: /var/www
     ports:
-      - "${APP_PORT:-9999}:9999"
+      - "${APP_PORT:-8080}:9501"
     volumes:
-      - .:/app
-      - /app/vendor  # Prevent overwriting vendor
+      - ./:/var/www
+      - /var/www/vendor  # Prevent overwriting vendor
     environment:
       - APP_ENV=${APP_ENV:-local}
       - APP_DEBUG=${APP_DEBUG:-true}
-      - APP_PORT=9999
+      - APP_PORT=9501
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=${DB_DATABASE:-alphavel}
+      - DB_USERNAME=${DB_USERNAME:-alphavel}
+      - DB_PASSWORD=${DB_PASSWORD:-alphavel}
     networks:
       - alphavel
-    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    command: php public/index.php
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9999/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:9501/"]
       interval: 30s
-      timeout: 10s
+      timeout: 3s
       retries: 3
       start_period: 40s
+
+  db:
+    image: mysql:8.0
+    container_name: alphavel-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-alphavel}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-alphavel}
+      MYSQL_USER: ${DB_USERNAME:-alphavel}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - alphavel
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root}"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
 
 networks:
   alphavel:
     driver: bridge
+
+volumes:
+  dbdata:
+    driver: local

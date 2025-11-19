@@ -4,29 +4,72 @@
 *.swp
 *.swo
 *~
+.project
+.buildpath
+.settings/
 
 # IDE Helper (generated)
 _ide_helper.php
 _ide_helper_models.php
+.phpstorm.meta.php
 
-# Environment & Docker
+# Environment & Configuration
 .env
 .env.local
 .env.*.local
+.env.backup
 
-# Cache
-storage/cache/
-storage/logs/
+# Storage - Cache & Logs
+storage/cache/*
+!storage/cache/.gitkeep
+storage/logs/*
+!storage/logs/.gitkeep
+storage/framework/cache/*
+!storage/framework/cache/.gitkeep
+storage/framework/facades.php
+bootstrap/cache/*
+!bootstrap/cache/.gitkeep
 *.cache
 
 # Dependencies
 vendor/
 composer.lock
 
-# OS
-.DS_Store
-Thumbs.db
+# Testing
+coverage/
+.phpunit.result.cache
+.phpunit.cache
 
-# Backups
+# Build & Deployment
+build/
+dist/
+*.sql
+*.sqlite
+*.sqlite3
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Backups & Temporary
 *.backup
 *.bak
+*.tmp
+*.log
+*.old
+*~
+
+# Docker volumes
+/mysql_data/
+/redis_data/
+
+# Node (if using frontend assets)
+node_modules/
+npm-debug.log
+yarn-error.log
