@@ -5,6 +5,33 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Semantic Versioning](https://semver.org/lang/pt-BR/).
 
+## [1.0.1] - 2025-11-19
+
+### 🐛 Correções Críticas
+
+- **facades.php agora é opcional**: Removido do autoload do Composer, eliminando erro fatal em containers Docker
+- **Dockerfile corrigido**: Diretórios criados antes do `composer install` para evitar erro de arquivo não encontrado
+- **Porta padronizada em 9999**: Todas as configurações agora usam porta 9999 consistentemente
+
+### 📝 Alterações
+
+- `composer.json`: Removido `storage/framework/facades.php` da seção `autoload.files`
+- `Dockerfile`: Ordem de execução corrigida - criar diretórios antes do composer
+- `config/app.php`: Porta padrão mudada de 9501 para 9999
+- `docker-compose.yml`: Mapeamento de porta atualizado para 9999:9999
+- `docker-compose.dev.yml`: Mapeamento de porta atualizado para 9999:9999
+- Scripts do composer: Removida criação automática de facades.php
+
+### 📚 Documentação
+
+- Adicionado `FACADES.md`: Documentação completa sobre facades e quando usá-las
+- README.md: Todas as referências de porta atualizadas para 9999
+- DESENVOLVIMENTO_LOCAL.md: Portas atualizadas
+
+### 🔧 Impacto
+
+Esta versão corrige o problema crítico de containers Docker em loop de reinicialização causado pelo arquivo `facades.php` ausente. O framework agora é totalmente modular e não requer facades para funcionar.
+
 ## [1.0.0] - 2025-11-19
 
 ### ✨ Lançamento Inicial
@@ -81,5 +108,6 @@ Primeira versão estável do Alphavel Framework - framework PHP moderno baseado 
 
 ---
 
+[1.0.1]: https://github.com/alphavel/skeleton/releases/tag/v1.0.1
 [1.0.0]: https://github.com/alphavel/skeleton/releases/tag/v1.0.0
-[Unreleased]: https://github.com/alphavel/skeleton/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/alphavel/skeleton/compare/v1.0.1...HEAD
