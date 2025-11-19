@@ -34,37 +34,57 @@
         }
     },
     "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
         "post-create-project-cmd": [
-            "@php -r \"file_exists('storage/framework') || mkdir('storage/framework', 0777, true);\"",
-            "@php -r \"file_exists('storage/logs') || mkdir('storage/logs', 0777, true);\"",
-            "@php -r \"file_exists('storage/cache') || mkdir('storage/cache', 0777, true);\"",
-            "@php -r \"file_exists('bootstrap/cache') || mkdir('bootstrap/cache', 0777, true);\"",
-            "@php -r \"file_put_contents('storage/framework/facades.php', '<?php\\n');\"",
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "@php -r \"echo '\\n✅ Alphavel Framework installed successfully!\\n';\"",
-            "@php -r \"echo '\\n📦 Suggested packages:\\n';\"",
-            "@php -r \"echo '   composer require alphavel/database\\n';\"",
-            "@php -r \"echo '   composer require alphavel/cache\\n';\"",
-            "@php -r \"echo '\\n🚀 Get started:\\n';\"",
-            "@php -r \"echo '   docker-compose up -d  # Or:\\n';\"",
-            "@php -r \"echo '   php public/index.php\\n';\"",
-            "@php -r \"echo '\\n📖 Docs: https://github.com/alphavel/alphavel\\n\\n';\""
+            "@php -r \"echo '\\n🚀 Alphavel Framework\\n';\"",
+            "@php -r \"echo '===================\\n\\n';\"",
+            "@create-directories",
+            "@set-permissions",
+            "@check-environment",
+            "@php -r \"echo '\\n✅ Projeto criado com sucesso!\\n\\n';\"",
+            "@show-next-steps"
         ],
         "post-install-cmd": [
-            "@php -r \"file_exists('storage/framework') || mkdir('storage/framework', 0777, true);\"",
-            "@php -r \"file_exists('storage/logs') || mkdir('storage/logs', 0777, true);\"",
-            "@php -r \"file_exists('storage/cache') || mkdir('storage/cache', 0777, true);\"",
-            "@php -r \"file_exists('bootstrap/cache') || mkdir('bootstrap/cache', 0777, true);\"",
-            "@php -r \"file_exists('storage/framework/facades.php') || file_put_contents('storage/framework/facades.php', '<?php\\n');\""
+            "@create-directories",
+            "@set-permissions"
         ],
         "post-update-cmd": [
-            "@php -r \"file_exists('storage/framework') || mkdir('storage/framework', 0777, true);\"",
-            "@php -r \"file_exists('storage/framework/facades.php') || file_put_contents('storage/framework/facades.php', '<?php\\n');\""
+            "@create-directories"
+        ],
+        "create-directories": [
+            "@php -r \"!is_dir('storage/framework') && mkdir('storage/framework', 0777, true);\"",
+            "@php -r \"!is_dir('storage/logs') && mkdir('storage/logs', 0777, true);\"",
+            "@php -r \"!is_dir('storage/cache') && mkdir('storage/cache', 0777, true);\"",
+            "@php -r \"!is_dir('bootstrap/cache') && mkdir('bootstrap/cache', 0777, true);\"",
+            "@php -r \"!file_exists('storage/framework/facades.php') && file_put_contents('storage/framework/facades.php', '<?php');\""
+        ],
+        "set-permissions": [
+            "@php -r \"@chmod('storage', 0777);\"",
+            "@php -r \"@chmod('storage/framework', 0777);\"",
+            "@php -r \"@chmod('storage/logs', 0777);\"",
+            "@php -r \"@chmod('storage/cache', 0777);\"",
+            "@php -r \"@chmod('bootstrap/cache', 0777);\""
+        ],
+        "check-environment": [
+            "@php -r \"if (!extension_loaded('swoole')) { echo '\\n⚠️  Extensão Swoole não encontrada!\\n\\n'; echo 'Opções de instalação:\\n'; echo '  1) Docker: docker-compose -f docker-compose.dev.yml up\\n'; echo '  2) Ubuntu/Debian: sudo apt install php-swoole\\n'; echo '  3) macOS: pecl install swoole\\n'; echo '  4) Windows: Use Docker (Swoole não suporta Windows)\\n'; }\""
+        ],
+        "show-next-steps": [
+            "@php -r \"echo '📝 Próximos passos:\\n\\n';\"",
+            "@php -r \"if (extension_loaded('swoole')) { echo '  ✅ Swoole detectado! Servidor pronto para iniciar:\\n\\n'; echo '     php public/index.php\\n'; echo '     # ou\\n'; echo '     make start\\n\\n'; echo '  🌐 Acesse: http://localhost:9501\\n\\n'; } else { echo '  📦 Instale Swoole (veja opções acima)\\n'; echo '  🐳 Ou use Docker:\\n\\n'; echo '     docker-compose -f docker-compose.dev.yml up\\n'; echo '     # ou\\n'; echo '     make dev\\n\\n'; echo '  🌐 Acesse: http://localhost:8080\\n\\n'; }\"",
+            "@php -r \"echo '📦 Pacotes opcionais:\\n';\"",
+            "@php -r \"echo '   composer require alphavel/database  # ORM e Query Builder\\n';\"",
+            "@php -r \"echo '   composer require alphavel/cache     # Cache (Redis, File)\\n';\"",
+            "@php -r \"echo '   composer require alphavel/logging   # Logs (PSR-3)\\n\\n';\"",
+            "@php -r \"echo '📚 Documentação: https://github.com/alphavel/skeleton\\n';\"",
+            "@php -r \"echo '💬 Suporte: https://github.com/alphavel/skeleton/issues\\n\\n';\""
         ],
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-html coverage",
         "start": "php public/index.php",
-        "dev": "php public/index.php"
+        "dev": "php public/index.php",
+        "serve": "php public/index.php"
     },
     "config": {
         "optimize-autoloader": true,
