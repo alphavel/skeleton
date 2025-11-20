@@ -116,10 +116,13 @@ status: ## Mostra o status dos containers
 	@echo "🌐 Aplicação: http://localhost:${APP_PORT:-9999}"
 	@echo "🗄️  MySQL: localhost:${DB_PORT:-3306}"
 
-fix-permissions: ## Corrige permissões de diretórios
+fix-permissions: ## Corrige permissões de diretórios (usa UID/GID do host)
 	@echo "🔧 Corrigindo permissões..."
-	@docker-compose exec app chmod -R 777 storage bootstrap/cache
-	@echo "✅ Permissões corrigidas"
+	@echo "   Detectando UID/GID do host: $$(id -u):$$(id -g)"
+	@docker run --rm -v $$(pwd):/app -w /app alpine:latest sh -c "\
+		chown -R $$(id -u):$$(id -g) storage bootstrap/cache && \
+		chmod -R 775 storage bootstrap/cache"
+	@echo "✅ Permissões corrigidas para UID=$$(id -u) GID=$$(id -g)"
 
 cache-clear: ## Limpa o cache da aplicação
 	@echo "🧹 Limpando cache..."

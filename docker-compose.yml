@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        USER_ID: ${USER_ID:-1000}
+        GROUP_ID: ${GROUP_ID:-1000}
     container_name: alphavel-app
     restart: unless-stopped
     working_dir: /var/www
@@ -29,7 +32,7 @@ services:
         condition: service_healthy
     command: php public/index.php
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9999/"]
+      test: ["CMD", "curl", "-f", "http://localhost:9999/json"]
       interval: 30s
       timeout: 3s
       retries: 3

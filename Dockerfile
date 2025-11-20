@@ -41,19 +41,29 @@ RUN echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Create user and group with same UID/GID as host (default 1000)
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+
+RUN groupadd -g ${GROUP_ID} alphavel || true \
+    && useradd -u ${USER_ID} -g alphavel -m -s /bin/bash alphavel || true
+
 # Set working directory
 WORKDIR /var/www
 
 # Copy application files
-COPY . .
+COPY --chown=alphavel:alphavel . .
 
 # Create required directories with proper permissions BEFORE composer
 RUN mkdir -p storage/framework \
              storage/logs \
              storage/cache \
              bootstrap/cache \
-    && chmod -R 777 storage \
-    && chmod -R 777 bootstrap/cache
+    && chown -R alphavel:alphavel storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
+# Switch to alphavel user
+USER alphavel
 
 # Install composer dependencies
 RUN composer install --no-dev --optimize-autoloader --prefer-dist
@@ -61,9 +71,9 @@ RUN composer install --no-dev --optimize-autoloader --prefer-dist
 # Expose Swoole port
 EXPOSE 9999
 
-# Health check
+# Health check - use /json endpoint that actually exists
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:9999/ || exit 1
+    CMD curl -f http://localhost:9999/json || exit 1
 
 # Start application
 CMD ["php", "public/index.php"]
