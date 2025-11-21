@@ -5,11 +5,37 @@ use Alphavel\Framework\Response;
 
 /** @var Router $router */
 
-// Home route - Shows framework version and info
-$router->get('/', 'App\Controllers\HomeController@index');
+// Welcome endpoint
+$router->get('/', function () {
+    return Response::make()->json([
+        'message' => 'Welcome to Alphavel Framework!',
+        'version' => '1.0.0',
+        'documentation' => 'https://alphavel.dev/docs'
+    ]);
+});
 
 // Health check endpoint
-$router->get('/health', 'App\Controllers\HomeController@health');
+$router->get('/health', function () {
+    return Response::make()->json([
+        'status' => 'healthy',
+        'timestamp' => date('Y-m-d H:i:s')
+    ]);
+});
+
+// Example endpoint with parameter
+$router->get('/hello/{name}', function ($name) {
+    return Response::make()->json([
+        'message' => "Hello, {$name}!",
+        'timestamp' => date('Y-m-d H:i:s')
+    ]);
+});
+
+// Example controller routes
+$router->get('/example', 'App\Controllers\ExampleController@index');
+$router->get('/example/{id}', 'App\Controllers\ExampleController@show');
+$router->post('/example', 'App\Controllers\ExampleController@store');
+$router->put('/example/{id}', 'App\Controllers\ExampleController@update');
+$router->delete('/example/{id}', 'App\Controllers\ExampleController@destroy');
 
 // Benchmark routes - High-performance database examples
 $router->get('/api/benchmark/user/{id}', 'App\Controllers\BenchmarkController@getUser');
