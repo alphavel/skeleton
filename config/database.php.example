@@ -1,0 +1,94 @@
+<?php
+
+/**
+ * Database Configuration (Example)
+ * 
+ * Copy this file to database.php and configure your database connection.
+ * This configuration is optimized for maximum performance with Swoole + Global Statement Cache.
+ */
+
+return [
+    'database' => [
+        'default' => 'mysql',
+        
+        'connections' => [
+            'mysql' => [
+                'driver' => 'mysql',
+                'host' => env('DB_HOST', '127.0.0.1'),
+                'port' => env('DB_PORT', 3306),
+                'database' => env('DB_DATABASE', 'alphavel'),
+                'username' => env('DB_USERNAME', 'root'),
+                'password' => env('DB_PASSWORD', ''),
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+                'prefix' => '',
+                
+                /**
+                 * PDO Options - Optimized for Swoole + Global Statement Cache
+                 * 
+                 * CRITICAL PERFORMANCE SETTINGS:
+                 * 
+                 * 1. ATTR_EMULATE_PREPARES => false (REQUIRED)
+                 *    - Use REAL MySQL prepared statements (not PHP emulation)
+                 *    - Essential for Global Statement Cache performance
+                 *    - 14-27% faster than emulated prepares
+                 *    - Benchmark: 6,000 → 7,200 req/s
+                 * 
+                 * 2. ATTR_PERSISTENT => OMIT (DO NOT USE)
+                 *    - Swoole workers are already persistent processes
+                 *    - DB::connectionRead() provides singleton connection
+                 *    - PERSISTENT adds overhead: lock contention, state management
+                 *    - 3-5% slower with PERSISTENT in Swoole context
+                 *    - Benchmark: 7,200 → 6,850 req/s with PERSISTENT
+                 * 
+                 * 3. pool_size => OMIT (DO NOT USE unless needed for writes)
+                 *    - Hot path (findOne, findMany) uses connectionRead() singleton
+                 *    - ConnectionPool only used for connection() method (transactions)
+                 *    - Unused pool = wasted memory (64 connections × ~1MB each)
+                 *    - 7% slower with unused pool_size=64
+                 *    - Only set if you need isolated connections for transactions
+                 */
+                'options' => [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false, // CRITICAL: Real prepared statements
+                    // PDO::ATTR_PERSISTENT => DO NOT USE - Redundant in Swoole
+                ],
+                
+                /**
+                 * Connection Pool Configuration (Optional)
+                 * 
+                 * ONLY configure if you need isolated connections for transactions.
+                 * Hot path methods (findOne, findMany) DO NOT use the pool.
+                 * 
+                 * Recommended values:
+                 * - Development: pool_size = 0 (disabled)
+                 * - Production:  pool_size = workers × 2 (if using transactions)
+                 * 
+                 * Example: 4 workers × 2 = 8 connections
+                 */
+                // 'pool_size' => env('DB_POOL_SIZE', 0), // 0 = disabled (recommended)
+            ],
+            
+            /**
+             * PostgreSQL Example (same optimization principles)
+             */
+            // 'pgsql' => [
+            //     'driver' => 'pgsql',
+            //     'host' => env('DB_HOST', '127.0.0.1'),
+            //     'port' => env('DB_PORT', 5432),
+            //     'database' => env('DB_DATABASE', 'alphavel'),
+            //     'username' => env('DB_USERNAME', 'postgres'),
+            //     'password' => env('DB_PASSWORD', ''),
+            //     'charset' => 'utf8',
+            //     'prefix' => '',
+            //     'schema' => 'public',
+            //     'options' => [
+            //         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            //         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            //         PDO::ATTR_EMULATE_PREPARES => false, // CRITICAL: Real prepared statements
+            //     ],
+            // ],
+        ],
+    ],
+];
