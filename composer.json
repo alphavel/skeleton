@@ -8,6 +8,7 @@
         "alphavel/alphavel": "^1.0"
     },
     "require-dev": {
+        "alphavel/alpha": "^1.0",
         "laravel/pint": "^1.25",
         "phpunit/phpunit": "^10.5",
         "squizlabs/php_codesniffer": "^4.0"

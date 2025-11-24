@@ -1,30 +1,47 @@
 #!/usr/bin/env php
 <?php
 /**
- * alphavel CLI - Artisan-like Console
+ * Alphavel CLI - Laravel Artisan-like Console
  * 
  * Usage:
- *   ./alphavel list
- *   ./alphavel make:controller UserController
- *   ./alphavel make:model User
- *   ./alphavel cache:clear
- *   ./alphavel serve
+ *   php alphavel list
+ *   php alphavel serve
+ *   php alphavel make:controller UserController
+ *   php alphavel make:model User
+ *   php alphavel make:resource Post
+ *   php alphavel cache:clear
  */
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Alphavel\Framework\Console\Console;
+// Check if alphavel/alpha package is installed
+if (class_exists('Alphavel\\Alpha\\Console\\Application')) {
+    // Use full-featured CLI from alphavel/alpha package
+    $console = new Alphavel\Alpha\Console\Application();
+    exit($console->run());
+}
 
-// Create console application
-$console = new Console();
-$console->setName('alphavel');
-$console->setVersion('1.0.0');
+// Fallback to basic CLI if alpha package not installed
+if (class_exists('Alphavel\\Framework\\Console\\Console')) {
+    $console = new Alphavel\Framework\Console\Console();
+    $console->setName('alphavel');
+    $console->setVersion('1.0.0');
+    
+    // Auto-discover commands from framework
+    if (is_dir(__DIR__ . '/vendor/alphavel/alphavel/src/Console/Commands')) {
+        $console->autodiscover(__DIR__ . '/vendor/alphavel/alphavel/src/Console/Commands');
+    }
+    
+    // Auto-discover user commands
+    if (is_dir(__DIR__ . '/app/Console/Commands')) {
+        $console->autodiscover(__DIR__ . '/app/Console/Commands');
+    }
+    
+    exit($console->run($argv));
+}
 
-// Auto-discover commands from core
-$console->autodiscover(__DIR__ . '/packages/core/src/Console/Commands');
-
-// Auto-discover user commands (if directory exists)
-$console->autodiscover(__DIR__ . '/app/Console/Commands');
-
-// Run console
-exit($console->run($argv));
+// No CLI available
+echo "\n❌ Alphavel CLI not found!\n\n";
+echo "Install CLI tools:\n";
+echo "  composer require alphavel/alpha --dev\n\n";
+exit(1);
