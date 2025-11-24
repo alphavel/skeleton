@@ -1,15 +1,15 @@
 #!/usr/bin/env php
 <?php
 /**
- * Alphavel CLI - Laravel Artisan-like Console
+ * Alpha CLI - Laravel Artisan-like Console for Alphavel Framework
  * 
  * Usage:
- *   php alphavel list
- *   php alphavel serve
- *   php alphavel make:controller UserController
- *   php alphavel make:model User
- *   php alphavel make:resource Post
- *   php alphavel cache:clear
+ *   php alpha list
+ *   php alpha serve
+ *   php alpha make:controller UserController
+ *   php alpha make:model User
+ *   php alpha make:resource Post
+ *   php alpha cache:clear
  */
 
 require __DIR__ . '/vendor/autoload.php';
@@ -24,7 +24,7 @@ if (class_exists('Alphavel\\Alpha\\Console\\Application')) {
 // Fallback to basic CLI if alpha package not installed
 if (class_exists('Alphavel\\Framework\\Console\\Console')) {
     $console = new Alphavel\Framework\Console\Console();
-    $console->setName('alphavel');
+    $console->setName('alpha');
     $console->setVersion('1.0.0');
     
     // Auto-discover commands from framework
@@ -41,7 +41,7 @@ if (class_exists('Alphavel\\Framework\\Console\\Console')) {
 }
 
 // No CLI available
-echo "\n❌ Alphavel CLI not found!\n\n";
+echo "\n❌ Alpha CLI not found!\n\n";
 echo "Install CLI tools:\n";
 echo "  composer require alphavel/alpha --dev\n\n";
 exit(1);

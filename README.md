@@ -421,7 +421,7 @@ composer create-project alphavel/skeleton my-app- ✅ PSR-12 (Extended Coding St
 
 cd my-app
 
-php alphavel serve**Performance:** 0% overhead (verified with PHP_CodeSniffer)
+php alpha serve**Performance:** 0% overhead (verified with PHP_CodeSniffer)
 
 ```
 
@@ -495,15 +495,15 @@ composer install
 
 ### Start Server
 
+```bash
+php alpha serve
+# Server running at http://localhost:9999
+```
+
 ### Basic Application
 
-```bash
-
-```php./alphavel serve
-
-<?php# Server running at http://localhost:9999
-
-```
+```php
+<?php
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -943,37 +943,37 @@ $result = collect($users)
 
 # Start development server
 
-php alphavel serve// Available methods:
+php alpha serve// Available methods:
 
 // map, filter, reduce, sum, avg, max, min, count, chunk,
 
 # Generate facades// groupBy, sortBy, pluck, where, first, last, random, etc.
 
-php alphavel facade:generate```
+php alpha facade:generate```
 
 
 
 # Clear caches### Validation
 
-php alphavel cache:clear
+php alpha cache:clear
 
-php alphavel config:clearBuilt-in validation with 10+ rules:
+php alpha config:clearBuilt-in validation with 10+ rules:
 
 
 
 # Create files```php
 
-php alphavel make:controller UserController$validated = $request->validate([
+php alpha make:controller UserController$validated = $request->validate([
 
-php alphavel make:model User    'email' => 'required|email',
+php alpha make:model User    'email' => 'required|email',
 
-php alphavel make:middleware AuthMiddleware    'age' => 'required|numeric|min:18',
+php alpha make:middleware AuthMiddleware    'age' => 'required|numeric|min:18',
 
     'password' => 'required|min:8',
 
 # List routes    'role' => 'in:admin,user,guest',
 
-php alphavel route:list]);
+php alpha route:list]);
 
 ```
 
@@ -1078,7 +1078,7 @@ Cache::remember('key', 300, fn() => expensiveOperation());
 composer dump-autoload -o
 
 # Cache routes and config
-./alphavel optimize
+php alpha optimize
 
 # Enable OPcache in production
 opcache.enable=1
@@ -1099,7 +1099,7 @@ services:
     build: .
     ports:
       - "8080:9999"
-    command: php alphavel serve
+    command: php alpha serve
 ```
 
 ```dockerfile
@@ -1109,7 +1109,7 @@ RUN pecl install swoole && docker-php-ext-enable swoole
 COPY . /app
 WORKDIR /app
 RUN composer install --optimize-autoloader --no-dev
-RUN php alphavel optimize
+RUN php alpha optimize
 CMD ["php", "alphavel", "serve"]
 ```
 
