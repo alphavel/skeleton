@@ -1,6 +1,6 @@
 FROM php:8.2-cli
 
-# Install system dependencies
+# Install system dependencies (oniguruma MUST be installed before mbstring)
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
+# Install PHP extensions (mbstring requires libonig-dev)
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip opcache
 
 # Install Swoole extension
