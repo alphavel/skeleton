@@ -8,13 +8,13 @@
         "alphavel/alphavel": "^1.0"
     },
     "require-dev": {
-        "alphavel/alpha": "^1.0",
         "laravel/pint": "^1.25",
         "phpunit/phpunit": "^10.5",
         "squizlabs/php_codesniffer": "^4.0"
     },
     "suggest": {
         "ext-swoole": "Required for high-performance async server (520k+ req/s). Install: sudo pecl install swoole",
+        "alphavel/alpha": "CLI tools for code generation (requires alphavel/database)",
         "alphavel/database": "For database operations and query builder",
         "alphavel/cache": "For caching support (Redis, Memcached, File)",
         "alphavel/events": "For event-driven architecture",
