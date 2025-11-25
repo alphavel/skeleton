@@ -2,9 +2,40 @@
 
 > Minimal application starter for Alphavel Framework - Swoole-powered PHP framework achieving 520k+ req/s
 
-[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.1-blue.svg)](https://php.net)
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.4-blue.svg)](https://php.net)
 [![Swoole](https://img.shields.io/badge/swoole-required-red.svg)](https://www.swoole.co.uk/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+---
+
+## 🚀 Performance: Proactive by Default (v1.0.6+)
+
+**Alphavel is now PROACTIVE about performance - you get 22k req/s out of the box!**
+
+### What's Optimized Automatically
+
+✅ **BASE mode** - 29% faster than PROCESS mode  
+✅ **CPU × 2 workers** - Optimal parallelism  
+✅ **Infinite max_request** - No restart overhead  
+✅ **APCu autoloader** - Cached class locations  
+✅ **Aggressive OPcache warm-up** - Hot cache from start  
+
+**No manual tuning required** - just deploy and go!
+
+### Benchmarks
+
+```bash
+# Out of the box performance
+wrk -t4 -c400 -d30s http://localhost:9999/json
+Requests/sec: 22,366 🚀
+
+# Raw routes (health checks, status endpoints)
+wrk -t12 -c400 -d30s http://localhost:9999/health
+Requests/sec: 520,000+ 🔥
+```
+
+**Previous versions:** 17k req/s (required manual tuning)  
+**Now (v1.0.6+):** 22k req/s (automatic!)
 
 ---
 
