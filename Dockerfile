@@ -68,19 +68,20 @@ ARG GROUP_ID=1000
 RUN groupadd -g ${GROUP_ID} alphavel || true \
     && useradd -u ${USER_ID} -g alphavel -m -s /bin/bash alphavel || true
 
-# Set working directory
+# Set working directory and create base structure as root
 WORKDIR /var/www
 
-# Copy application files
-COPY --chown=alphavel:alphavel . .
-
-# Create required directories with proper permissions BEFORE composer
+# Create ALL required directories with proper permissions FIRST (as root)
 RUN mkdir -p storage/framework \
              storage/logs \
              storage/cache \
              bootstrap/cache \
-    && chown -R alphavel:alphavel storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+             vendor \
+    && chown -R alphavel:alphavel . \
+    && chmod -R 775 storage bootstrap/cache vendor
+
+# Copy application files (already owned by alphavel)
+COPY --chown=alphavel:alphavel . .
 
 # Switch to alphavel user
 USER alphavel
