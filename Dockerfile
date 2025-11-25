@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libcurl4-openssl-dev \
     libbrotli-dev \
-    libbrotlienc-dev \
     autoconf \
     g++ \
     make \
