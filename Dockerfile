@@ -77,12 +77,23 @@ RUN composer install \
     --no-progress \
     --ignore-platform-req=ext-swoole
 
+# Create directories and set permissions
+RUN mkdir -p storage/framework storage/logs storage/cache bootstrap/cache \
+    && chmod -R 777 storage bootstrap/cache
+
+# Copy and configure entrypoint
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Expose Swoole port
 EXPOSE 9999
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
     CMD curl -sf http://localhost:9999/json || exit 1
+
+# Use entrypoint to ensure permissions
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Start application
 CMD ["php", "public/index.php"]

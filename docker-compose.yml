@@ -11,8 +11,12 @@ services:
     ports:
       - "${APP_PORT:-9999}:9999"
     volumes:
-      - ./:/var/www
-      - /var/www/vendor  # Prevent overwriting vendor
+      - ./app:/var/www/app
+      - ./config:/var/www/config
+      - ./public:/var/www/public
+      - ./routes:/var/www/routes
+      - ./storage:/var/www/storage
+      - ./.env:/var/www/.env:ro
     environment:
       - APP_ENV=${APP_ENV:-local}
       - APP_DEBUG=${APP_DEBUG:-true}
