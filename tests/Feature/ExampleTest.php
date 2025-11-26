@@ -7,18 +7,10 @@ use PHPUnit\Framework\TestCase;
 class ExampleTest extends TestCase
 {
     /**
-     * A simple passing test.
+     * A basic test example.
      */
-    public function test_basic_assertion(): void
+    public function test_example(): void
     {
         $this->assertTrue(true);
-    }
-
-    /**
-     * Test basic math.
-     */
-    public function test_basic_math(): void
-    {
-        $this->assertEquals(4, 2 + 2);
     }
 }
