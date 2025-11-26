@@ -37,7 +37,7 @@ $router->get('/', function () {
     return Response::make()->json([
         'message' => 'Welcome to Alphavel Framework!',
         'version' => '1.0.0',
-        'documentation' => 'https://alphavel.dev/docs'
+        'documentation' => 'https://alphavel.github.io/documentation'
     ]);
 });
 
