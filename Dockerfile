@@ -69,6 +69,7 @@ WORKDIR /var/www
 COPY composer.json ./
 
 # Install dependencies as root (will create fresh composer.lock)
+# Composer will fetch alphavel/alphavel:dev-main from GitHub
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
