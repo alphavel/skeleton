@@ -65,21 +65,26 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy application files
-COPY . .
+# Copy composer files first
+COPY composer.json ./
 
-# Install dependencies
+# Install dependencies as root (will create fresh composer.lock)
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --classmap-authoritative \
     --no-interaction \
     --no-progress \
-    --ignore-platform-req=ext-swoole
+    --ignore-platform-req=ext-swoole \
+    && composer clear-cache
+
+# Copy rest of application files
+COPY . .
 
 # Create directories and set permissions
 RUN mkdir -p storage/framework storage/logs storage/cache bootstrap/cache \
-    && chmod -R 777 storage bootstrap/cache
+    && chmod -R 777 storage bootstrap/cache \
+    && chmod 666 composer.lock 2>/dev/null || true
 
 # Copy and configure entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
