@@ -65,17 +65,30 @@
             "@php -r \"@chmod('bootstrap/cache', 0777);\""
         ],
         "check-environment": [
-            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"\\n⚠️  Extensão Swoole não encontrada!\\n\\n\\\"); printf(\\\"Opções de instalação:\\n\\\"); printf(\\\"  1) Docker: docker-compose -f docker-compose.dev.yml up\\n\\\"); printf(\\\"  2) Ubuntu/Debian: sudo apt install php-swoole\\n\\\"); printf(\\\"  3) macOS: pecl install swoole\\n\\\"); printf(\\\"  4) Windows: Use Docker (Swoole não suporta Windows)\\n\\\"); }\""
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"\\n⚠️  Extensão Swoole não encontrada!\\n\\n\\\"); }\"",
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"Opções de instalação:\\n\\\"); }\"",
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"  1) Docker: docker-compose -f docker-compose.dev.yml up\\n\\\"); }\"",
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"  2) Ubuntu/Debian: sudo apt install php-swoole\\n\\\"); }\"",
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"  3) macOS: pecl install swoole\\n\\\"); }\"",
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"  4) Windows: Use Docker (Swoole não suporta Windows)\\n\\\"); }\""
         ],
         "show-next-steps": [
             "@php -r \"printf(\\\"📝 Próximos passos:\\n\\n\\\");\"",
-            "@php -r \"if (extension_loaded('swoole')) { printf(\\\"  ✅ Swoole detectado! Servidor pronto para iniciar:\\n\\n\\\"); printf(\\\"     php public/index.php\\n\\\"); printf(\\\"     # ou\\n\\\"); printf(\\\"     make start\\n\\n\\\"); printf(\\\"  🌐 Acesse: http://localhost:9999\\n\\n\\\"); } else { printf(\\\"  📦 Instale Swoole (veja opções acima)\\n\\\"); printf(\\\"  🐳 Ou use Docker:\\n\\n\\\"); printf(\\\"     docker-compose -f docker-compose.dev.yml up\\n\\\"); printf(\\\"     # ou\\n\\\"); printf(\\\"     make dev\\n\\n\\\"); printf(\\\"  🌐 Acesse: http://localhost:9999\\n\\n\\\"); }\"",
+            "@php -r \"if (extension_loaded('swoole')) { printf(\\\"  ✅ Swoole detectado! Servidor pronto:\\n\\n\\\"); }\"",
+            "@php -r \"if (extension_loaded('swoole')) { printf(\\\"     php public/index.php\\n\\\"); }\"",
+            "@php -r \"if (extension_loaded('swoole')) { printf(\\\"     # ou: make start\\n\\n\\\"); }\"",
+            "@php -r \"if (extension_loaded('swoole')) { printf(\\\"  🌐 http://localhost:9999\\n\\n\\\"); }\"",
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"  📦 Instale Swoole (veja opções acima)\\n\\\"); }\"",
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"  🐳 Ou use Docker:\\n\\n\\\"); }\"",
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"     docker-compose -f docker-compose.dev.yml up\\n\\\"); }\"",
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"     # ou: make dev\\n\\n\\\"); }\"",
+            "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"  🌐 http://localhost:9999\\n\\n\\\"); }\"",
             "@php -r \"printf(\\\"📦 Pacotes opcionais:\\n\\\");\"",
-            "@php -r \"printf(\\\"   composer require alphavel/database  # ORM e Query Builder\\n\\\");\"",
-            "@php -r \"printf(\\\"   composer require alphavel/cache     # Cache (Redis, File)\\n\\\");\"",
-            "@php -r \"printf(\\\"   composer require alphavel/logging   # Logs (PSR-3)\\n\\n\\\");\"",
-            "@php -r \"printf(\\\"📚 Documentação: https://github.com/alphavel/skeleton\\n\\\");\"",
-            "@php -r \"printf(\\\"💬 Suporte: https://github.com/alphavel/skeleton/issues\\n\\n\\\");\""
+            "@php -r \"printf(\\\"   composer require alphavel/database\\n\\\");\"",
+            "@php -r \"printf(\\\"   composer require alphavel/cache\\n\\\");\"",
+            "@php -r \"printf(\\\"   composer require alphavel/logging\\n\\n\\\");\"",
+            "@php -r \"printf(\\\"📚 https://github.com/alphavel/skeleton\\n\\\");\"",
+            "@php -r \"printf(\\\"💬 https://github.com/alphavel/skeleton/issues\\n\\n\\\");\""
         ],
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-html coverage",
