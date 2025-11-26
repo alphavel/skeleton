@@ -4,7 +4,7 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^8.4",
+        "php": ">=8.1",
         "alphavel/alphavel": "^1.0"
     },
     "require-dev": {
