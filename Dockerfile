@@ -41,7 +41,9 @@ RUN { \
     echo 'date.timezone=UTC'; \
     } > /usr/local/etc/php/conf.d/performance.ini
 
-# Configure Opcache (Production Optimized - No JIT)
+# Configure Opcache + JIT (Production Optimized)
+# Critical for Swoole CLI mode: opcache.enable_cli=1 must be enabled
+# JIT (Just-In-Time compiler) provides 10-30% performance boost for PHP 8.x
 RUN { \
     echo 'opcache.enable=1'; \
     echo 'opcache.enable_cli=1'; \
@@ -51,7 +53,11 @@ RUN { \
     echo 'opcache.validate_timestamps=0'; \
     echo 'opcache.save_comments=1'; \
     echo 'opcache.fast_shutdown=1'; \
-    } > /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+    echo ''; \
+    echo '; JIT Configuration (PHP 8.0+)'; \
+    echo 'opcache.jit_buffer_size=100M'; \
+    echo 'opcache.jit=tracing'; \
+    } > /usr/local/etc/php/conf.d/opcache-custom.ini
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
