@@ -43,15 +43,34 @@ abstract class TestCase extends BaseTestCase
      */
     protected function call(string $method, string $uri, array $data = []): Response
     {
-        // Set up request environment
-        $_SERVER['REQUEST_METHOD'] = $method;
-        $_SERVER['REQUEST_URI'] = $uri;
-        $_SERVER['HTTP_HOST'] = 'localhost';
-        $_POST = $method === 'POST' ? $data : [];
-        $_GET = $method === 'GET' ? $data : [];
+        // Create a mock Swoole request object
+        $swooleRequest = new class($method, $uri, $data) {
+            public array $server;
+            public array $get;
+            public array $post;
+            public array $header;
+            private string $body;
 
-        // Create request and handle
-        $request = Request::capture();
+            public function __construct(string $method, string $uri, array $data)
+            {
+                $this->server = [
+                    'request_method' => $method,
+                    'request_uri' => $uri,
+                ];
+                $this->get = $method === 'GET' ? $data : [];
+                $this->post = $method === 'POST' ? $data : [];
+                $this->header = [];
+                $this->body = json_encode($data);
+            }
+
+            public function rawContent(): string
+            {
+                return $this->body;
+            }
+        };
+
+        // Create request from mock Swoole request
+        $request = (new Request())->createFromSwoole($swooleRequest);
         
         return $this->app->handle($request);
     }
