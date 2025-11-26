@@ -46,27 +46,13 @@ if (!extension_loaded('opcache')) {
     
     // Verificar JIT
     $jit = ini_get('opcache.jit');
-    $jitBuffer = ini_get('opcache.jit_buffer_size');
     
-    if ($jit === 'tracing' || $jit === '1255') {
-        $checks[] = "✅ JIT configurado: $jit";
-        echo "   ✅ JIT: $jit\n";
+    if ($jit === 'disable' || $jit === 'off' || empty($jit)) {
+        $checks[] = "✅ JIT desabilitado (recomendado para I/O bound)";
+        echo "   ✅ JIT: desabilitado (recomendado para I/O bound)\n";
     } else {
-        $warnings[] = "⚠️  JIT não otimizado (atual: $jit, recomendado: tracing)";
-        echo "   ⚠️  JIT: $jit (recomendado: tracing)\n";
-    }
-    
-    if ($jitBuffer) {
-        $bufferMB = intval($jitBuffer) / (1024 * 1024);
-        $checks[] = "✅ JIT Buffer: " . $bufferMB . "M";
-        echo "   ✅ JIT Buffer: " . $bufferMB . "M\n";
-        
-        if ($bufferMB < 100) {
-            $warnings[] = "⚠️  JIT Buffer pequeno (recomendado: 128M)";
-        }
-    } else {
-        $errors[] = "❌ JIT Buffer não configurado";
-        echo "   ❌ JIT Buffer: NÃO CONFIGURADO\n";
+        $warnings[] = "⚠️  JIT habilitado ($jit). Para APIs I/O bound, 'disable' pode ser mais estável.";
+        echo "   ⚠️  JIT: $jit (recomendado: disable)\n";
     }
     
     // Verificar outras configs importantes
@@ -120,15 +106,15 @@ if (file_exists($vendorPath)) {
 if ($dbServiceProvider) {
     $content = file_get_contents($dbServiceProvider);
     
-    if (strpos($content, 'ATTR_EMULATE_PREPARES => true') !== false) {
-        $checks[] = "✅ Emulated Prepares habilitado";
-        echo "   ✅ Emulated Prepares: HABILITADO\n";
-    } else if (strpos($content, 'ATTR_EMULATE_PREPARES => false') !== false) {
-        $warnings[] = "⚠️  Emulated Prepares desabilitado (perde ~14% performance)";
-        echo "   ⚠️  Emulated Prepares: DESABILITADO (perde ~14% performance)\n";
+    if (strpos($content, 'ATTR_EMULATE_PREPARES => false') !== false) {
+        $checks[] = "✅ Real Prepared Statements habilitado";
+        echo "   ✅ Real Prepared Statements: HABILITADO (permite Global Statement Cache)\n";
+    } else if (strpos($content, 'ATTR_EMULATE_PREPARES => true') !== false) {
+        $warnings[] = "⚠️  Emulated Prepares habilitado (impede Global Statement Cache)";
+        echo "   ⚠️  Emulated Prepares: HABILITADO (recomendado: FALSE para usar cache de statements)\n";
     } else {
-        $warnings[] = "⚠️  Emulated Prepares não configurado explicitamente";
-        echo "   ⚠️  Emulated Prepares: não configurado\n";
+        $warnings[] = "⚠️  ATTR_EMULATE_PREPARES não configurado explicitamente";
+        echo "   ⚠️  ATTR_EMULATE_PREPARES: não configurado\n";
     }
 } else {
     echo "   ℹ️  Database package não instalado (ok se não usar DB)\n";
