@@ -36,12 +36,12 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php -r \"echo '\\n🚀 Alphavel Framework\\n';\"",
-            "@php -r \"echo '===================\\n\\n';\"",
+            "@php -r \"echo PHP_EOL . '🚀 Alphavel Framework' . PHP_EOL;\"",
+            "@php -r \"echo '===================' . PHP_EOL . PHP_EOL;\"",
             "@create-directories",
             "@set-permissions",
             "@check-environment",
-            "@php -r \"echo '\\n✅ Projeto criado com sucesso!\\n\\n';\"",
+            "@php -r \"echo PHP_EOL . '✅ Projeto criado com sucesso!' . PHP_EOL . PHP_EOL;\"",
             "@show-next-steps"
         ],
         "post-install-cmd": [
@@ -65,17 +65,17 @@
             "@php -r \"@chmod('bootstrap/cache', 0777);\""
         ],
         "check-environment": [
-            "@php -r \"if (!extension_loaded('swoole')) { echo '\\n⚠️  Extensão Swoole não encontrada!\\n\\n'; echo 'Opções de instalação:\\n'; echo '  1) Docker: docker-compose -f docker-compose.dev.yml up\\n'; echo '  2) Ubuntu/Debian: sudo apt install php-swoole\\n'; echo '  3) macOS: pecl install swoole\\n'; echo '  4) Windows: Use Docker (Swoole não suporta Windows)\\n'; }\""
+            "@php -r \"if (!extension_loaded('swoole')) { echo PHP_EOL . '⚠️  Extensão Swoole não encontrada!' . PHP_EOL . PHP_EOL; echo 'Opções de instalação:' . PHP_EOL; echo '  1) Docker: docker-compose -f docker-compose.dev.yml up' . PHP_EOL; echo '  2) Ubuntu/Debian: sudo apt install php-swoole' . PHP_EOL; echo '  3) macOS: pecl install swoole' . PHP_EOL; echo '  4) Windows: Use Docker (Swoole não suporta Windows)' . PHP_EOL; }\""
         ],
         "show-next-steps": [
-            "@php -r \"echo '📝 Próximos passos:\\n\\n';\"",
-            "@php -r \"if (extension_loaded('swoole')) { echo '  ✅ Swoole detectado! Servidor pronto para iniciar:\\n\\n'; echo '     php public/index.php\\n'; echo '     # ou\\n'; echo '     make start\\n\\n'; echo '  🌐 Acesse: http://localhost:9999\\n\\n'; } else { echo '  📦 Instale Swoole (veja opções acima)\\n'; echo '  🐳 Ou use Docker:\\n\\n'; echo '     docker-compose -f docker-compose.dev.yml up\\n'; echo '     # ou\\n'; echo '     make dev\\n\\n'; echo '  🌐 Acesse: http://localhost:9999\\n\\n'; }\"",
-            "@php -r \"echo '📦 Pacotes opcionais:\\n';\"",
-            "@php -r \"echo '   composer require alphavel/database  # ORM e Query Builder\\n';\"",
-            "@php -r \"echo '   composer require alphavel/cache     # Cache (Redis, File)\\n';\"",
-            "@php -r \"echo '   composer require alphavel/logging   # Logs (PSR-3)\\n\\n';\"",
-            "@php -r \"echo '📚 Documentação: https://github.com/alphavel/skeleton\\n';\"",
-            "@php -r \"echo '💬 Suporte: https://github.com/alphavel/skeleton/issues\\n\\n';\""
+            "@php -r \"echo '📝 Próximos passos:' . PHP_EOL . PHP_EOL;\"",
+            "@php -r \"if (extension_loaded('swoole')) { echo '  ✅ Swoole detectado! Servidor pronto para iniciar:' . PHP_EOL . PHP_EOL; echo '     php public/index.php' . PHP_EOL; echo '     # ou' . PHP_EOL; echo '     make start' . PHP_EOL . PHP_EOL; echo '  🌐 Acesse: http://localhost:9999' . PHP_EOL . PHP_EOL; } else { echo '  📦 Instale Swoole (veja opções acima)' . PHP_EOL; echo '  🐳 Ou use Docker:' . PHP_EOL . PHP_EOL; echo '     docker-compose -f docker-compose.dev.yml up' . PHP_EOL; echo '     # ou' . PHP_EOL; echo '     make dev' . PHP_EOL . PHP_EOL; echo '  🌐 Acesse: http://localhost:9999' . PHP_EOL . PHP_EOL; }\"",
+            "@php -r \"echo '📦 Pacotes opcionais:' . PHP_EOL;\"",
+            "@php -r \"echo '   composer require alphavel/database  # ORM e Query Builder' . PHP_EOL;\"",
+            "@php -r \"echo '   composer require alphavel/cache     # Cache (Redis, File)' . PHP_EOL;\"",
+            "@php -r \"echo '   composer require alphavel/logging   # Logs (PSR-3)' . PHP_EOL . PHP_EOL;\"",
+            "@php -r \"echo '📚 Documentação: https://github.com/alphavel/skeleton' . PHP_EOL;\"",
+            "@php -r \"echo '💬 Suporte: https://github.com/alphavel/skeleton/issues' . PHP_EOL . PHP_EOL;\""
         ],
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-html coverage",
