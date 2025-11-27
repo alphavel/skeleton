@@ -28,8 +28,8 @@ if (class_exists('Alphavel\\Framework\\Console\\Console')) {
     $console->setVersion('1.0.0');
     
     // Auto-discover commands from framework
-    if (is_dir(__DIR__ . '/vendor/alphavel/alphavel/src/Console/Commands')) {
-        $console->autodiscover(__DIR__ . '/vendor/alphavel/alphavel/src/Console/Commands');
+    if (is_dir(__DIR__ . '/vendor/alphavel/alphavel/Console/Commands')) {
+        $console->autodiscover(__DIR__ . '/vendor/alphavel/alphavel/Console/Commands');
     }
     
     // Auto-discover user commands
