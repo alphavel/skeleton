@@ -5,8 +5,9 @@ return [
         'host' => env('SERVER_HOST', '0.0.0.0'),
         'port' => env('SERVER_PORT', 9999),
         
-        // 🚀 PERFORMANCE OPTIMIZED: Workers = CPU × 2 (maximum throughput)
-        // For HTTP/REST APIs, this provides optimal parallelism
+        // 🚀 PERFORMANCE OPTIMIZED: Workers tuned for maximum throughput
+        // Sweet spot: 8 workers for BASE mode (optimal for < 2 CPUs)
+        // For 2+ CPUs with PROCESS mode: use CPU × 2
         'workers' => env('SERVER_WORKERS', function_exists('swoole_cpu_num') ? swoole_cpu_num() * 2 : 8),
         'reactors' => env('SERVER_REACTORS', function_exists('swoole_cpu_num') ? swoole_cpu_num() * 2 : 8),
         
