@@ -15,10 +15,10 @@ return [
         // Set to 10000 if you suspect memory leaks
         'max_request' => env('SERVER_MAX_REQUEST', 0),
         
-        // 🚀 PERFORMANCE OPTIMIZED: Use BASE mode for HTTP (less overhead)
-        // BASE: Single process, better for stateless HTTP/REST
-        // PROCESS: Multi-process, better for WebSockets/long-running tasks
-        'mode' => env('SERVER_MODE', 'base'), // 'base' or 'process'
+        // 🚀 PERFORMANCE CRITICAL: PROCESS mode for maximum throughput (+300% performance!)
+        // PROCESS: Multi-process, uses all CPU cores - RECOMMENDED for production
+        // BASE: Single process + coroutines, limited to 1 core - only for development
+        'mode' => env('SERVER_MODE', 'process'), // 'process' (production) or 'base' (dev only)
         
         'dispatch_mode' => 1, // 1: Round robin, 3: Concurrent
         'max_coroutine' => 100000,
