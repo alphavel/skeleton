@@ -23,6 +23,13 @@ if (class_exists('Alphavel\\Alpha\\Console\\Application')) {
 
 // Fallback to basic CLI if alpha package not installed
 if (class_exists('Alphavel\\Framework\\Console\\Console')) {
+    // Show info message if listing commands
+    if (!isset($argv[1]) || $argv[1] === 'list' || $argv[1] === '--list') {
+        echo "\n\033[33mℹ️  Usando comandos básicos do framework\033[0m\n";
+        echo "Para acessar todos os comandos avançados, instale:\n";
+        echo "  \033[36mcomposer require alphavel/alpha --dev\033[0m\n\n";
+    }
+    
     $console = new Alphavel\Framework\Console\Console();
     $console->setName('alpha');
     $console->setVersion('1.0.0');
