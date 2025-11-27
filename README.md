@@ -46,6 +46,32 @@ docker-compose -f docker-compose.dev.yml up
 curl http://localhost:9999
 ```
 
+### 🐳 Installing Without PHP/Swoole Locally
+
+If you don't have PHP or Swoole installed on your machine:
+
+```bash
+# 1. Install project (ignoring platform requirements)
+composer create-project alphavel/skeleton my-app --ignore-platform-reqs
+
+# 2. Go to project directory
+cd my-app
+
+# 3. Start with Docker (composer install runs inside container automatically)
+docker-compose up
+
+# The container will:
+# ✅ Detect missing vendor/autoload.php
+# ✅ Run composer install automatically
+# ✅ Copy any missing skeleton files
+# ✅ Start the server
+
+# Access
+curl http://localhost:9999
+```
+
+**Note:** The Docker entrypoint automatically handles missing dependencies and skeleton files.
+
 ---
 
 ## 📦 Optional Packages

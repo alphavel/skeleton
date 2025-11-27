@@ -28,8 +28,34 @@ fi
 
 if [ ! -f "/var/www/vendor/autoload.php" ]; then
     echo "⚠️  WARNING: vendor/autoload.php not found!"
-    echo "Running composer install..."
-    composer install --no-interaction --no-dev --optimize-autoloader
+    echo "Running composer install inside container..."
+    cd /var/www
+    composer install \
+        --no-interaction \
+        --no-dev \
+        --optimize-autoloader \
+        --classmap-authoritative \
+        --no-progress
+    echo "✅ Composer install completed"
+fi
+
+# Check if bootstrap/app.php exists after composer install
+if [ ! -f "/var/www/bootstrap/app.php" ]; then
+    echo "❌ ERROR: bootstrap/app.php still not found after composer install!"
+    echo ""
+    echo "This means the skeleton files were not properly installed."
+    echo ""
+    echo "Solution:"
+    echo "  The container will copy the file from the image to your volume."
+    
+    # If we're in the image (not a volume mount), bootstrap should exist in the image
+    if [ -f "/tmp/bootstrap/app.php" ]; then
+        echo "  Copying bootstrap/app.php from image..."
+        cp /tmp/bootstrap/app.php /var/www/bootstrap/app.php
+    else
+        echo "  Please ensure you created the project with:"
+        echo "  composer create-project alphavel/skeleton your-project --ignore-platform-reqs"
+    fi
 fi
 
 echo "✅ All critical files found. Starting server..."

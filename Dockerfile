@@ -82,6 +82,9 @@ RUN composer install \
 # Copy rest of application files
 COPY . .
 
+# Backup skeleton files to /tmp (for recovery if volumes overwrite)
+RUN mkdir -p /tmp/bootstrap && cp -r bootstrap/app.php /tmp/bootstrap/ || true
+
 # Create directories and set permissions
 RUN mkdir -p storage/framework storage/logs storage/cache bootstrap/cache \
     && chmod -R 777 storage bootstrap/cache \
