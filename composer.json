@@ -65,6 +65,7 @@
             "@php -r \"@chmod('bootstrap/cache', 0777);\""
         ],
         "check-environment": [
+            "@php -r \"if (version_compare(PHP_VERSION, '8.4', '<')) { printf(\\\"\\n⚠️  PHP %s detected - Alphavel requires PHP >= 8.4.\\n\\\", PHP_VERSION); printf(\\\"  Recommended: use Docker: docker-compose -f docker-compose.dev.yml up\\n\\\"); printf(\\\"  Or re-run create-project with --ignore-platform-reqs if you understand the risk:\\n  composer create-project alphavel/skeleton my-app --ignore-platform-reqs\\n\\n\\\"); }\"",
             "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"\\n⚠️  Extensão Swoole não encontrada!\\n\\n\\\"); }\"",
             "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"Opções de instalação:\\n\\\"); }\"",
             "@php -r \"if (!extension_loaded('swoole')) { printf(\\\"  1) Docker: docker-compose -f docker-compose.dev.yml up\\n\\\"); }\"",

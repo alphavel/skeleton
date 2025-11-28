@@ -72,6 +72,37 @@ curl http://localhost:9999
 
 **Note:** The Docker entrypoint automatically handles missing dependencies and skeleton files.
 
+## ⚠️ Composer cache permissions (host)
+
+During `composer create-project` you may see warnings like:
+
+```
+Cannot create cache directory /home/USER/.composer/cache/... or directory is not writable. Proceeding without cache.
+```
+
+This is harmless for the project creation itself, but can be confusing. Recommendations:
+
+- Fix permissions for the Composer cache directory on your host:
+
+```bash
+# Replace $USER with your username if needed
+mkdir -p "$HOME/.composer/cache"
+chown -R "$USER:$USER" "$HOME/.composer"
+```
+
+- Or avoid host Composer entirely by using the provided Docker image (recommended):
+
+```bash
+docker-compose -f docker-compose.dev.yml up
+```
+
+If you must ignore platform requirements when creating the project (not recommended for production), use:
+
+```bash
+composer create-project alphavel/skeleton my-app --ignore-platform-reqs
+```
+
+
 ---
 
 ## 📦 Optional Packages

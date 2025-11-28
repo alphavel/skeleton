@@ -97,9 +97,9 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 # Expose Swoole port
 EXPOSE 9999
 
-# Health check
+# Health check (use lightweight /ping endpoint for clearer health semantics)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
-    CMD curl -sf http://localhost:9999/json || exit 1
+    CMD curl -sf http://localhost:9999/ping || exit 1
 
 # Use entrypoint to ensure permissions
 ENTRYPOINT ["docker-entrypoint.sh"]
